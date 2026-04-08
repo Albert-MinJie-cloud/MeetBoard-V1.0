@@ -2,7 +2,7 @@
 import React, { useState, useCallback } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { useRouter } from "expo-router";
-import { getRoomInfo, saveRoomInfo } from "@/utils/StorageService";
+import { getMeetingRoomId, saveMeetingRoomId } from "@/utils/StorageService";
 import CustomModal from "@/components/Modal";
 
 export default function MeetBoardMain() {
@@ -17,7 +17,7 @@ export default function MeetBoardMain() {
   const handleConfirm = useCallback(async () => {
     if (roomId && roomId.trim()) {
       const roomInfo = { roomId: roomId.trim() };
-      await saveRoomInfo(roomInfo);
+      await saveMeetingRoomId(roomInfo);
       setShowDialog(false);
       router.replace({
         pathname: "/meeting/meeting-detail",
@@ -35,7 +35,7 @@ export default function MeetBoardMain() {
   // 初始化：校验缓存并跳转对应页面
   React.useEffect(() => {
     const initRouter = async () => {
-      const cachedRoomInfo = await getRoomInfo();
+      const cachedRoomInfo = await getMeetingRoomId();
       if (cachedRoomInfo) {
         // 有缓存：跳转详情页
         router.replace({

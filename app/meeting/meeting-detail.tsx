@@ -1,6 +1,6 @@
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { useState, useRef } from "react";
-import { clearRoomInfo } from "@/utils/StorageService";
+import { clearMeetingRoomId } from "@/utils/StorageService";
 import { useRouter } from "expo-router";
 import CustomModal from "@/components/Modal";
 
@@ -17,7 +17,7 @@ export default function Index() {
   // 控制确认对话框的显示状态
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   // 用于重置点击计数的定时器引用
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<number | null>(null);
 
   /**
    * 处理调试区域的点击事件
@@ -57,7 +57,7 @@ export default function Index() {
    * 清除后隐藏调试按钮和对话框，并返回首页
    */
   const handleConfirmClear = async () => {
-    await clearRoomInfo();
+    await clearMeetingRoomId();
     setShowConfirmModal(false);
     setShowDebugButton(false);
     router.replace("/");

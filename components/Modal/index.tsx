@@ -103,8 +103,8 @@ const styles = StyleSheet.create({
   dialogContainer: {
     backgroundColor: "white",
     borderRadius: 16,
-    paddingVertical: 40,
-    paddingHorizontal: 60,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
     width: "100%",
     maxWidth: 1920,
     // marginHorizontal: 40,
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   dialogTitle: {
-    fontSize: 28,
+    fontSize: 14,
     fontWeight: "bold",
     marginBottom: 12,
     textAlign: "center",
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     borderRadius: 12,
     padding: 16,
-    fontSize: 20,
+    fontSize: 16,
     marginBottom: 24,
     backgroundColor: "#f9f9f9",
   },
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    padding: 16,
+    padding: 8,
     borderRadius: 12,
     alignItems: "center",
   },
