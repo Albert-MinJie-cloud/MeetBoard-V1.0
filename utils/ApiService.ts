@@ -76,8 +76,8 @@ export const getTenantToken = async () => {
  */
 export const getFreeBusyMeetingRoom = async (
   roomIds: string[],
-  startDate: string,
-  endDate: string,
+  time_min: string,
+  time_max: string,
 ) => {
   try {
     const token = await getTenantToken();
@@ -86,8 +86,8 @@ export const getFreeBusyMeetingRoom = async (
     const res = await feishuAxios.get("/meeting_room/freebusy/batch_get", {
       params: {
         room_ids: roomIds.join(","), // Query参数要求字符串（多个ID用逗号分隔）
-        time_min: startDate,
-        time_max: endDate,
+        time_min: time_min,
+        time_max: time_max,
       },
       headers: {
         Authorization: `Bearer ${token}`,
