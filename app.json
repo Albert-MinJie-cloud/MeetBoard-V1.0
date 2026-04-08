@@ -21,7 +21,8 @@
       "minSdkVersion": 30,
       "screenOrientation": "landscape",
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.min_jie_expo.myapp"
     },
     "web": {
       "output": "static",
@@ -45,6 +46,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e516843f-ddf6-437e-b815-9b1570765ad1"
+      }
     }
   }
 }
