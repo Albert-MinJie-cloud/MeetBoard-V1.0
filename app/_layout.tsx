@@ -12,16 +12,6 @@ export default function RootLayout() {
           name="(tabs)/index"
           options={{ headerShown: false, title: "MeetBoard" }} // 隐藏导航栏
         />
-        {/* 会议详情 */}
-        <Stack.Screen
-          name="meeting/meeting-detail"
-          options={{ headerShown: false, title: "MeetBoard" }} // 隐藏导航栏
-        />
-        {/* 错误页面 */}
-        <Stack.Screen
-          name="error"
-          options={{ headerShown: false }} // 隐藏导航栏
-        />
       </Stack>
     </>
   );

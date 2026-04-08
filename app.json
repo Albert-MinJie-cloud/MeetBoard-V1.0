@@ -18,6 +18,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
+      "minSdkVersion": 30,
+      "screenOrientation": "landscape",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
