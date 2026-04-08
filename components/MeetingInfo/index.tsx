@@ -1,18 +1,16 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-
-/**
- * 会议信息展示组件
- * @param {Object} props - 组件属性
- * @param {Object} props.meetingInfo - 会议信息对象（必须包含time/theme/booker字段）
- * @param {StyleSheet} [props.customStyles] - 自定义样式（可选，用于覆盖默认样式）
- */
+import { getHourMinute } from "@/utils/Time";
 
 interface MeetingInfoProps {
+  isMeetingActive: boolean;
   meetingInfo: {
-    time: string;
-    theme: string;
-    booker: string;
+    start_time: string;
+    end_time: string;
+    summary: string;
+    organizer_info: {
+      name: string;
+    };
   };
   customStyles?: {
     container?: object;
@@ -22,26 +20,48 @@ interface MeetingInfoProps {
   };
 }
 
-const MeetingInfo = ({ meetingInfo, customStyles = {} }: MeetingInfoProps) => {
+const MeetingInfo = ({
+  isMeetingActive,
+  meetingInfo,
+  customStyles = {},
+}: MeetingInfoProps) => {
   // 解构会议信息，添加默认值避免空值报错
-  const { time = "暂无", theme = "暂无", booker = "暂无" } = meetingInfo || {};
+
+  const {
+    start_time = "",
+    end_time = "",
+    summary = "暂无",
+    organizer_info = { name: "暂无" },
+  } = meetingInfo || {};
+
+  if (!isMeetingActive) {
+    return (
+      <View style={[styles.meetingInfoContainer, customStyles.container]}>
+        <Text style={styles.emptyText}>当前无会议进行中</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.meetingInfoContainer, customStyles.container]}>
       {/* 会议时间行 */}
       <View style={[styles.infoRow, customStyles.row]}>
         <Text style={[styles.infoLabel, customStyles.label]}>会议时间</Text>
-        <Text style={[styles.infoValue, customStyles.value]}>{time}</Text>
+        <Text style={[styles.infoValue, customStyles.value]}>
+          {getHourMinute(start_time)} - {getHourMinute(end_time)}
+        </Text>
       </View>
       {/* 会议主题行 */}
       <View style={[styles.infoRow, customStyles.row]}>
         <Text style={[styles.infoLabel, customStyles.label]}>会议主题</Text>
-        <Text style={[styles.infoValue, customStyles.value]}>{theme}</Text>
+        <Text style={[styles.infoValue, customStyles.value]}>{summary}</Text>
       </View>
       {/* 预约人行 */}
       <View style={[styles.infoRow, customStyles.row]}>
         <Text style={[styles.infoLabel, customStyles.label]}>预约人</Text>
-        <Text style={[styles.infoValue, customStyles.value]}>{booker}</Text>
+        <Text style={[styles.infoValue, customStyles.value]}>
+          {organizer_info?.name}
+        </Text>
       </View>
     </View>
   );
@@ -63,6 +83,13 @@ const styles = StyleSheet.create({
   infoValue: {
     fontSize: 16,
     color: "#333",
+  },
+  // 新增空数据样式
+  emptyText: {
+    fontSize: 14,
+    color: "#999",
+    textAlign: "center",
+    marginTop: 20,
   },
 });
 

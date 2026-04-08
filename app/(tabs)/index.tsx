@@ -25,7 +25,7 @@ const Index = () => {
       if (roomId) {
         // 已有roomId，直接进入会议室
         // 这里可以添加导航逻辑，例如使用React Navigation跳转到会议室界面
-        console.log("已有roomId，进入会议室:", roomId);
+        // console.log("已有roomId，进入会议室:", roomId);
         setShowDetails(true);
       } else {
         // 无roomId，显示弹窗
@@ -46,6 +46,8 @@ const Index = () => {
   // 清空roomId
   const clearRoomId = async () => {
     await removeStorage(STORAGE_KEYS.ROOM_ID);
+    await removeStorage(STORAGE_KEYS.TENANT_TOKEN);
+    await removeStorage(STORAGE_KEYS.TOKEN_EXPIRE_TIME);
     setShowDetails(false);
     setModalVisible(true);
   };

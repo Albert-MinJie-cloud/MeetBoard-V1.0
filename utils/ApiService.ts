@@ -1,12 +1,12 @@
 import axios from "axios";
-import { getStorage, setStorage, STORAGE_KEYS } from "./StorageService";
+import { getStorage, setStorage, STORAGE_KEYS } from "@/utils/StorageService";
 
 // 飞书配置（替换为你的实际值）
 const FEISHU_CONFIG = {
   APP_ID: "cli_a93ddaa2f2bb9bc3",
   APP_SECRET: "jYNtpr5fziKlRs5FD5Bnhd0gDmNj1OAY",
-  BASE_URL: "http://localhost:3000/api/feishu", // 代理服务器地址（安卓模拟器/真机替换为电脑IP）
-  // BASE_URL: 'https://open.feishu.cn/open-apis' // 原生端调试（无代理）时用这个
+  // BASE_URL: "http://localhost:3000/api/feishu", // 代理服务器地址（安卓模拟器/真机替换为电脑IP）
+  BASE_URL: "https://open.feishu.cn/open-apis", // 原生端调试（无代理）时用这个
 };
 
 // 创建axios实例
@@ -28,11 +28,12 @@ export const getTenantToken = async () => {
       getStorage(STORAGE_KEYS.TENANT_TOKEN),
       getStorage(STORAGE_KEYS.TOKEN_EXPIRE_TIME),
     ]);
+
     const expireTime = expireTimeStr ? Number(expireTimeStr) : 0;
 
     // token有效则直接返回
     if (token && Date.now() < expireTime) {
-      console.log("使用本地缓存的Token");
+      // console.log("使用本地缓存的Token");
       return token;
     }
 
@@ -46,8 +47,8 @@ export const getTenantToken = async () => {
     );
 
     if (res.data.code === 0) {
-      const newToken = res.data.tenant_access_token;
-      const expiresIn = res.data.expire || 7200; // 默认2小时
+      const newToken = res?.data?.tenant_access_token;
+      const expiresIn = res?.data?.expire || 7200; // 默认2小时
       const newExpireTime = Date.now() + expiresIn * 1000;
 
       // 存储新token和过期时间
@@ -55,15 +56,15 @@ export const getTenantToken = async () => {
         setStorage(STORAGE_KEYS.TENANT_TOKEN, newToken),
         setStorage(STORAGE_KEYS.TOKEN_EXPIRE_TIME, newExpireTime.toString()),
       ]);
-      console.log("获取新Token成功，过期时间：", new Date(newExpireTime));
+      // console.log("获取新Token成功，过期时间：", new Date(newExpireTime));
       return newToken;
     } else {
       throw new Error(
-        `获取Token失败：${res.data.msg}（code:${res.data.code}）`,
+        `获取Token失败：${res?.data?.msg}（code:${res?.data?.code}）`,
       );
     }
   } catch (e) {
-    console.error("getTenantToken 错误：", (e as Error).message);
+    // console.error("getTenantToken 错误：", (e as Error).message);
     throw e;
   }
 };
@@ -75,12 +76,12 @@ export const getTenantToken = async () => {
  * @param endDate 结束时间（格式：YYYY-MM-DD HH:mm:ss）
  */
 export const getFreeBusyMeetingRoom = async (
-  roomIds: string[],
   time_min: string,
   time_max: string,
 ) => {
   try {
     const token = await getTenantToken();
+    const roomIds = await Promise.all([getStorage(STORAGE_KEYS.ROOM_ID)]);
 
     // 关键修正：GET请求 + Query参数
     const res = await feishuAxios.get("/meeting_room/freebusy/batch_get", {
@@ -94,16 +95,16 @@ export const getFreeBusyMeetingRoom = async (
       },
     });
 
-    if (res.data.code === 0) {
-      console.log("空闲会议室查询成功：", res.data.data);
-      return res.data.data;
+    if (res?.data?.code === 0) {
+      // console.log("空闲会议室查询成功：", res.data.data);
+      return res?.data?.data;
     } else {
       throw new Error(
-        `空闲会议室查询失败：${res.data.msg}（code:${res.data.code}）`,
+        `空闲会议室查询失败：${res?.data?.msg}（code:${res?.data?.code}）`,
       );
     }
   } catch (e) {
-    console.error("getFreeBusyMeetingRoom 错误：", (e as Error).message);
+    // console.error("getFreeBusyMeetingRoom 错误：", (e as Error).message);
     throw e;
   }
 };
@@ -114,23 +115,27 @@ export const getFreeBusyMeetingRoom = async (
  * @param startDate 开始时间
  * @param endDate 结束时间
  */
-export const getMeetingRoomSummary = async () => {
+export const getMeetingRoomSummary = async (
+  uids: { uid: string; original_time: number }[],
+) => {
   try {
     const token = await getTenantToken();
+
     const res = await feishuAxios.post(
       "/meeting_room/summary/batch_get",
-      {
-        EventUids: [
-          {
-            uid: "41cadcb5-2a4e-484e-b019-ace3d99d1aa8",
-            original_time: 0,
-          },
-          {
-            uid: "0fcdcd26-dce2-4ed0-85b2-1569f33b7bd7",
-            original_time: 0,
-          },
-        ],
-      },
+      // {
+      //   EventUids: [
+      //     {
+      //       uid: "41cadcb5-2a4e-484e-b019-ace3d99d1aa8",
+      //       original_time: 0,
+      //     },
+      //     {
+      //       uid: "0fcdcd26-dce2-4ed0-85b2-1569f33b7bd7",
+      //       original_time: 0,
+      //     },
+      //   ],
+      // },
+      { EventUids: uids?.map((uid) => ({ uid, original_time: 0 })) },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -138,16 +143,16 @@ export const getMeetingRoomSummary = async () => {
       },
     );
 
-    if (res.data.code === 0) {
-      console.log("会议室主题查询成功：", res.data.data);
-      return res.data.data;
+    if (res?.data?.code === 0) {
+      // console.log("会议室主题查询成功：", res.data.data);
+      return res?.data?.data;
     } else {
       throw new Error(
-        `会议室主题查询失败：${res.data.msg}（code:${res.data.code}）`,
+        `会议室主题查询失败：${res?.data?.msg}（code:${res?.data?.code}）`,
       );
     }
   } catch (e) {
-    console.error("getMeetingRoomSummary 错误：", (e as Error).message);
+    // console.error("getMeetingRoomSummary 错误：", (e as Error).message);
     throw e;
   }
 };

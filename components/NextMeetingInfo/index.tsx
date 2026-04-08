@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
+import { getHourMinute } from "@/utils/Time";
 
 /**
  * 会议信息展示组件
@@ -9,9 +10,12 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 
 interface NextMeetingInfoProps {
   nextMeetings: {
-    title: string;
-    time: string;
-    person: string;
+    summary: string;
+    start_time: string;
+    end_time: string;
+    organizer_info: {
+      name: string;
+    };
   }[];
 }
 
@@ -33,11 +37,11 @@ const NextMeetingInfo = ({ nextMeetings }: NextMeetingInfoProps) => {
               numberOfLines={1}
               ellipsizeMode="tail"
             >
-              {item.title}
+              {item?.summary}
             </Text>
             <Text
               style={styles.meetingTimePerson}
-            >{`${item.time} | ${item.person}`}</Text>
+            >{`${getHourMinute(item?.start_time)} - ${getHourMinute(item?.end_time)} | ${item?.organizer_info?.name}`}</Text>
           </View>
         )}
         // 可选：添加列表空数据提示
