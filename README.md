@@ -59,12 +59,9 @@ MeetBoard-V1.0/
 ├── app/                    # 应用页面（基于文件路由）
 │   ├── (tabs)/            # 底部导航页面
 │   │   └── index.tsx      # 首页
-│   ├── meeting/           # 会议相关页面
-│   │   └── meeting-detail.tsx
 │   ├── _layout.tsx        # 根布局
 │   └── error.tsx          # 错误页面
 ├── components/            # 可复用组件
-├── constants/             # 常量配置
 ├── assets/               # 静态资源
 ├── utils/                # 工具函数
 └── babel.config.js       # Babel 配置
