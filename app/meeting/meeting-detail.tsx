@@ -1,8 +1,8 @@
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { useState, useRef } from "react";
-import { clearRoomInfo } from "../../utils/StorageService";
+import { clearRoomInfo } from "@/utils/StorageService";
 import { useRouter } from "expo-router";
-import CustomModal from "../../components/Modal";
+import CustomModal from "@/components/Modal";
 
 /**
  * 会议详情页面

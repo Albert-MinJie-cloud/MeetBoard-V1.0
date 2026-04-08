@@ -1,6 +1,6 @@
 // utils/StorageService.ts
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { STORAGE_KEYS } from "../constants/Config";
+import { STORAGE_KEYS } from "@/constants/Config";
 
 // 会议室信息类型
 export type RoomInfo = {
