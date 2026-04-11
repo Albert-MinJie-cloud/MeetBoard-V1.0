@@ -3,6 +3,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 // 存储键名常量
 export const STORAGE_KEYS = {
   ROOM_ID: "meeting_room_id",
+  APP_ID: "meeting_app_id",
+  APP_SECRET: "meeting_app_secret",
   TENANT_TOKEN: "tenant_access_token",
   TOKEN_EXPIRE_TIME: "token_expire_time", // 记录token过期时间（2小时）
 };

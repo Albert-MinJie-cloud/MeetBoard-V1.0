@@ -8,27 +8,42 @@ import {
   STORAGE_KEYS,
 } from "@/utils/StorageService";
 
-import RoomIdModal from "@/components/RoomIdModal";
+import InitModal from "@/components/InitModal";
 import MeetingBoard from "@/components/MeetingBoard";
 
+interface InitFormValues {
+  roomId: string;
+  appId: string;
+  appSecret: string;
+}
+
 const Index = () => {
-  // 弹窗显示控制
   const [modalVisible, setModalVisible] = useState(false);
-
-  // 展示详情组件
   const [showDetails, setShowDetails] = useState(false);
+  const [isEditingConfig, setIsEditingConfig] = useState(false);
 
-  // 初始化：检查roomId
+  const [formValues, setFormValues] = useState<InitFormValues>({
+    roomId: "",
+    appId: "",
+    appSecret: "",
+  });
+
   useEffect(() => {
     const init = async () => {
       const roomId = await getStorage(STORAGE_KEYS.ROOM_ID);
-      if (roomId) {
-        // 已有roomId，直接进入会议室
-        // 这里可以添加导航逻辑，例如使用React Navigation跳转到会议室界面
-        // console.log("已有roomId，进入会议室:", roomId);
+      const appId = await getStorage(STORAGE_KEYS.APP_ID);
+      const appSecret = await getStorage(STORAGE_KEYS.APP_SECRET);
+
+      setFormValues({
+        roomId: roomId ?? "",
+        appId: appId ?? "",
+        appSecret: appSecret ?? "",
+      });
+
+      if (roomId && appId && appSecret) {
         setShowDetails(true);
       } else {
-        // 无roomId，显示弹窗
+        setIsEditingConfig(false);
         setModalVisible(true);
       }
     };
@@ -36,35 +51,52 @@ const Index = () => {
     init();
   }, []);
 
-  // 保存roomId
-  const handleSaveRoomId = async (roomId: string) => {
-    await setStorage(STORAGE_KEYS.ROOM_ID, roomId);
+  // 保存信息
+  const handleSaveConfig = async (values: InitFormValues) => {
+    await setStorage(STORAGE_KEYS.ROOM_ID, values.roomId);
+    await setStorage(STORAGE_KEYS.APP_ID, values.appId);
+    await setStorage(STORAGE_KEYS.APP_SECRET, values.appSecret);
+
+    await removeStorage(STORAGE_KEYS.TENANT_TOKEN);
+    await removeStorage(STORAGE_KEYS.TOKEN_EXPIRE_TIME);
+
+    setFormValues(values);
+    setIsEditingConfig(false);
     setModalVisible(false);
     setShowDetails(true);
   };
 
-  // 清空roomId
-  const clearRoomId = async () => {
-    await removeStorage(STORAGE_KEYS.ROOM_ID);
-    await removeStorage(STORAGE_KEYS.TENANT_TOKEN);
-    await removeStorage(STORAGE_KEYS.TOKEN_EXPIRE_TIME);
-    setShowDetails(false);
+  // 编辑信息
+  const handleEditConfig = () => {
+    setIsEditingConfig(true);
     setModalVisible(true);
+    setShowDetails(false);
+  };
+
+  // 取消编辑信息
+  const handleCancelEdit = () => {
+    setIsEditingConfig(false);
+    setModalVisible(false);
+    setShowDetails(true);
   };
 
   if (showDetails) {
-    // 这里可以返回会议室详情组件
     return (
       <View style={styles.container}>
-        <MeetingBoard clearRoomId={clearRoomId} />
+        <MeetingBoard onEditConfig={handleEditConfig} />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      {/* 输入roomId的弹窗 */}
-      <RoomIdModal visible={modalVisible} onSave={handleSaveRoomId} />
+      <InitModal
+        visible={modalVisible}
+        initialValues={formValues}
+        onSave={handleSaveConfig}
+        onClose={handleCancelEdit}
+        showCancel={isEditingConfig}
+      />
     </View>
   );
 };
@@ -73,7 +105,7 @@ const Index = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#3b70ff",
+    backgroundColor: "#1447e6",
     padding: 20,
   },
 });

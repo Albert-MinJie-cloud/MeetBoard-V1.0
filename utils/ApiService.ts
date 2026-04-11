@@ -3,8 +3,8 @@ import { getStorage, setStorage, STORAGE_KEYS } from "@/utils/StorageService";
 
 // 飞书配置（替换为你的实际值）
 const FEISHU_CONFIG = {
-  APP_ID: "cli_a93ddaa2f2bb9bc3",
-  APP_SECRET: "jYNtpr5fziKlRs5FD5Bnhd0gDmNj1OAY",
+  // APP_ID: "cli_a93ddaa2f2bb9bc3",
+  // APP_SECRET: "jYNtpr5fziKlRs5FD5Bnhd0gDmNj1OAY",
   // BASE_URL: "http://localhost:3000/api/feishu", // 代理服务器地址（安卓模拟器/真机替换为电脑IP）
   BASE_URL: "https://open.feishu.cn/open-apis", // 原生端调试（无代理）时用这个
 };
@@ -37,12 +37,20 @@ export const getTenantToken = async () => {
       return token;
     }
 
+    // 同时获取appId和appSecret，确保它们存在
+    const appId = await getStorage(STORAGE_KEYS.APP_ID);
+    const appSecret = await getStorage(STORAGE_KEYS.APP_SECRET);
+
+    if (!appId || !appSecret) {
+      throw new Error("缺少飞书应用配置");
+    }
+
     // 调用接口获取新token
     const res = await feishuAxios.post(
       "/auth/v3/tenant_access_token/internal",
       {
-        app_id: FEISHU_CONFIG.APP_ID,
-        app_secret: FEISHU_CONFIG.APP_SECRET,
+        app_id: appId,
+        app_secret: appSecret,
       },
     );
 
@@ -56,7 +64,6 @@ export const getTenantToken = async () => {
         setStorage(STORAGE_KEYS.TENANT_TOKEN, newToken),
         setStorage(STORAGE_KEYS.TOKEN_EXPIRE_TIME, newExpireTime.toString()),
       ]);
-      // console.log("获取新Token成功，过期时间：", new Date(newExpireTime));
       return newToken;
     } else {
       throw new Error(
@@ -64,7 +71,6 @@ export const getTenantToken = async () => {
       );
     }
   } catch (e) {
-    // console.error("getTenantToken 错误：", (e as Error).message);
     throw e;
   }
 };
@@ -116,26 +122,14 @@ export const getFreeBusyMeetingRoom = async (
  * @param endDate 结束时间
  */
 export const getMeetingRoomSummary = async (
-  uids: { uid: string; original_time: number }[],
+  eventUids: { uid: string; original_time: number }[],
 ) => {
   try {
     const token = await getTenantToken();
 
     const res = await feishuAxios.post(
       "/meeting_room/summary/batch_get",
-      // {
-      //   EventUids: [
-      //     {
-      //       uid: "41cadcb5-2a4e-484e-b019-ace3d99d1aa8",
-      //       original_time: 0,
-      //     },
-      //     {
-      //       uid: "0fcdcd26-dce2-4ed0-85b2-1569f33b7bd7",
-      //       original_time: 0,
-      //     },
-      //   ],
-      // },
-      { EventUids: uids?.map((uid) => ({ uid, original_time: 0 })) },
+      { EventUids: eventUids },
       {
         headers: {
           Authorization: `Bearer ${token}`,

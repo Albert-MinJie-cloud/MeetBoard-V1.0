@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 
 import {
   getFreeBusyMeetingRoom,
@@ -13,18 +13,13 @@ import MainContent from "@/components/MainContent";
 import DebugPanel from "@/components/DebugPanel";
 
 interface IndexProps {
-  clearRoomId: () => void;
+  onEditConfig?: () => void;
 }
 
-const Index = ({ clearRoomId }: IndexProps) => {
+const Index = ({ onEditConfig }: IndexProps) => {
   // 页面数据
   const [meetingList, setMeetingList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // console.log(
-  //   "MeetingBoard 渲染，当前会议列表:",
-  //   loading ? "加载中..." : meetingList,
-  // );
 
   // 定时器Ref（防止内存泄漏）
   const timerRef = useRef<NodeJS.Timeout | null | number>(null);
@@ -41,9 +36,6 @@ const Index = ({ clearRoomId }: IndexProps) => {
       endDate.setHours(23, 59, 59);
       const endTime = toFeishuDateTime(endDate);
 
-      // const endTime = "2026-03-18T23:59:59+08:00";
-      // const startTime = "2026-03-18T00:00:00+08:00";
-
       // 1. 查询会议室状态
       const roomRes = await getFreeBusyMeetingRoom(startTime, endTime);
 
@@ -55,7 +47,6 @@ const Index = ({ clearRoomId }: IndexProps) => {
         ...item,
         status: getMeetingStatus(item?.start_time, item?.end_time),
       }));
-      // console.log("会议状态数据:", meetingDataWithStatus);
 
       // 过滤出有效数据
       const validMeetingData = meetingDataWithStatus;
@@ -71,8 +62,13 @@ const Index = ({ clearRoomId }: IndexProps) => {
       }
 
       // 3. 有会议：调用第三个接口查询详情
-      const uids = validMeetingData?.map((item: any) => item.uid);
-      const summaryRes = await getMeetingRoomSummary(uids);
+      // const uids = validMeetingData?.map((item: any) => item.uid);
+      const eventUids = validMeetingData?.map((item: any) => ({
+        uid: item.uid,
+        original_time: item.original_time,
+      }));
+
+      const summaryRes = await getMeetingRoomSummary(eventUids);
       const eventInfos = summaryRes?.EventInfos || [];
 
       // 4. 合并两个接口的数据（时间/发起人 + 主题/链接）
@@ -84,6 +80,7 @@ const Index = ({ clearRoomId }: IndexProps) => {
       // console.log("合并后的会议列表:", mergedList);
     } catch (error) {
       console.error("数据加载失败", error);
+      Alert.alert("错误", "会议数据加载失败，请稍后重试");
     } finally {
       setLoading(false);
     }
@@ -103,7 +100,7 @@ const Index = ({ clearRoomId }: IndexProps) => {
   }, []);
 
   return (
-    <DebugPanel onClearRoomId={clearRoomId}>
+    <DebugPanel onEditConfig={onEditConfig}>
       <View style={styles.meetingBoardContainer}>
         <Header />
         <MainContent meetingList={meetingList} />
@@ -116,7 +113,7 @@ const Index = ({ clearRoomId }: IndexProps) => {
 const styles = StyleSheet.create({
   meetingBoardContainer: {
     flex: 1,
-    backgroundColor: "#3b70ff",
+    backgroundColor: "#1447e6",
   },
 });
 

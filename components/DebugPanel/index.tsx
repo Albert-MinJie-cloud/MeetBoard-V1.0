@@ -8,11 +8,11 @@ import {
 import { useEffect, useState, useRef } from "react";
 
 interface Props {
-  onClearRoomId: () => void;
+  onEditConfig?: () => void;
   children: React.ReactNode; // 包裹页面内容
 }
 
-export default function DebugPanel({ onClearRoomId, children }: Props) {
+export default function DebugPanel({ onEditConfig, children }: Props) {
   // 🔥 用 ref 存点击计数（无冗余，不触发重渲染）
   const tapCountRef = useRef(0);
   const [showDebug, setShowDebug] = useState(false);
@@ -52,7 +52,7 @@ export default function DebugPanel({ onClearRoomId, children }: Props) {
 
   // 点击调试按钮
   const handleDebugPress = () => {
-    onClearRoomId();
+    onEditConfig?.();
     resetHideTimer(); // 续30秒
   };
 
@@ -69,7 +69,7 @@ export default function DebugPanel({ onClearRoomId, children }: Props) {
             onPress={handleDebugPress}
             activeOpacity={0.7}
           >
-            <Text style={styles.text}>清空会议室ID</Text>
+            <Text style={styles.text}>修改会议室信息</Text>
           </TouchableOpacity>
         )}
       </View>
