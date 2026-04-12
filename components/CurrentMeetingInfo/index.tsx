@@ -6,6 +6,7 @@ import NoMeeting from "@/components/NoMeeting";
 
 interface MeetingInfoProps {
   isMeetingActive: boolean;
+  meetRoomDataStatus: "empty" | "error" | "haveMeeting";
   meetingInfo: {
     start_time: string;
     end_time: string;
@@ -19,12 +20,16 @@ interface MeetingInfoProps {
     row?: object;
     label?: object;
     value?: object;
+    timeValue?: object;
+    titleValue?: object;
+    personValue?: object;
   };
 }
 
 const MeetingInfo = ({
   isMeetingActive,
   meetingInfo,
+  meetRoomDataStatus,
   customStyles = {},
 }: MeetingInfoProps) => {
   // 解构会议信息，添加默认值避免空值报错
@@ -36,7 +41,15 @@ const MeetingInfo = ({
     organizer_info = { name: "暂无" },
   } = meetingInfo || {};
 
-  if (!isMeetingActive) {
+  if (meetRoomDataStatus === "error") {
+    return (
+      <View style={[styles.noMeetingInfoContainer, customStyles.container]}>
+        <NoMeeting dataStatus="error_meeting" />
+      </View>
+    );
+  }
+
+  if (meetRoomDataStatus === "empty") {
     return (
       <View style={[styles.noMeetingInfoContainer, customStyles.container]}>
         <NoMeeting dataStatus="no_meeting" />
@@ -49,19 +62,21 @@ const MeetingInfo = ({
       {/* 会议时间行 */}
       <View style={[styles.infoRow, customStyles.row]}>
         <Text style={[styles.infoLabel, customStyles.label]}>会议时间</Text>
-        <Text style={[styles.infoValue, customStyles.value]}>
+        <Text style={[styles.infoTimeValue, customStyles.timeValue]}>
           {getHourMinute(start_time)} - {getHourMinute(end_time)}
         </Text>
       </View>
       {/* 会议主题行 */}
       <View style={[styles.infoRow, customStyles.row]}>
         <Text style={[styles.infoLabel, customStyles.label]}>会议主题</Text>
-        <Text style={[styles.infoValue, customStyles.value]}>{summary}</Text>
+        <Text style={[styles.infoTitleValue, customStyles.titleValue]}>
+          {summary}
+        </Text>
       </View>
       {/* 预约人行 */}
       <View style={[styles.infoRow, customStyles.row]}>
         <Text style={[styles.infoLabel, customStyles.label]}>预约人</Text>
-        <Text style={[styles.infoValue, customStyles.value]}>
+        <Text style={[styles.infoPersonValue, customStyles.personValue]}>
           {organizer_info?.name}
         </Text>
       </View>
@@ -73,6 +88,9 @@ const MeetingInfo = ({
 const styles = StyleSheet.create({
   meetingInfoContainer: {
     flex: 1,
+    justifyContent: "center",
+    gap: 32,
+    padding: 60,
     borderRadius: 16,
     backgroundColor: "#fff",
     shadowColor: "#000",
@@ -99,17 +117,26 @@ const styles = StyleSheet.create({
     flexDirection: "column", // 标签和值上下排列
   },
   infoLabel: {
-    fontSize: 18,
-    fontWeight: "600",
-    marginBottom: 5, // 标签和值的间距
-  },
-  infoValue: {
     fontSize: 16,
-    color: "#333",
+    color: "#999",
+  },
+  infoTimeValue: {
+    fontSize: 24,
+    color: "#1677ff",
+    fontWeight: 700,
+  },
+  infoTitleValue: {
+    fontSize: 30,
+    color: "#1d2129",
+    fontWeight: 700,
+  },
+  infoPersonValue: {
+    fontSize: 16,
+    color: "#4E5969",
   },
   // 新增空数据样式
   emptyText: {
-    fontSize: 14,
+    fontSize: 12,
     color: "#999",
     textAlign: "center",
     marginTop: 20,

@@ -1,8 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
 
-const MeetingStatus = ({ isMeetingActive = true }) => {
-  const statusText = isMeetingActive ? "会议进行中" : "无会议";
+interface IndexProps {
+  isMeetingActive: boolean;
+  meetRoomDataStatus: "empty" | "error" | "haveMeeting";
+}
+
+const MeetingStatus = ({
+  isMeetingActive = true,
+  meetRoomDataStatus,
+}: IndexProps) => {
+  const statusText = () => {
+    if (meetRoomDataStatus === "error") {
+      return "异常";
+    }
+    if (meetRoomDataStatus === "empty") {
+      return "空闲";
+    }
+    if (meetRoomDataStatus === "haveMeeting" && isMeetingActive) {
+      return "会议进行中";
+    }
+  };
+
   const dotOpacity = useState(new Animated.Value(1))[0];
 
   useEffect(() => {
@@ -32,13 +51,17 @@ const MeetingStatus = ({ isMeetingActive = true }) => {
     <View
       style={[
         styles.statusContainer,
-        isMeetingActive ? styles.activeContainer : styles.inactiveContainer,
+        meetRoomDataStatus === "error" && styles.inactiveContainer,
+        meetRoomDataStatus === "empty" && styles.emptyContainer,
+        meetRoomDataStatus === "haveMeeting" &&
+          isMeetingActive &&
+          styles.activeContainer,
       ]}
     >
       {isMeetingActive && (
         <Animated.View style={[styles.flashDot, { opacity: dotOpacity }]} />
       )}
-      <Text style={styles.meetingStatusText}>{statusText}</Text>
+      <Text style={styles.meetingStatusText}>{statusText()}</Text>
     </View>
   );
 };
@@ -63,6 +86,9 @@ const styles = StyleSheet.create({
   },
   inactiveContainer: {
     backgroundColor: "#999999",
+  },
+  emptyContainer: {
+    backgroundColor: "#90C36B",
   },
   meetingStatusText: {
     color: "white",

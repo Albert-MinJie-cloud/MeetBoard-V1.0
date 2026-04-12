@@ -11,6 +11,7 @@ import NoMeeting from "@/components/NoMeeting";
  */
 
 interface NextMeetingInfoProps {
+  meetRoomDataStatus: "empty" | "error" | "haveMeeting";
   nextMeetings: {
     summary: string;
     start_time: string;
@@ -21,12 +22,15 @@ interface NextMeetingInfoProps {
   }[];
 }
 
-const NextMeetingInfo = ({ nextMeetings }: NextMeetingInfoProps) => {
+const NextMeetingInfo = ({
+  nextMeetings,
+  meetRoomDataStatus,
+}: NextMeetingInfoProps) => {
   return (
     <View style={styles.nextMeetingsContainer}>
       <View style={styles.nextMeetingTitleContainer}>
         <View style={styles.nextMeetingTitleIcon} />
-        <Text style={styles.nextMeetingTitle}>下一场会议</Text>
+        <Text style={styles.nextMeetingTitle}>后续会议</Text>
       </View>
 
       <FlatList
@@ -52,13 +56,17 @@ const NextMeetingInfo = ({ nextMeetings }: NextMeetingInfoProps) => {
               numberOfLines={1}
               ellipsizeMode="tail"
             >
-              {item?.organizer_info?.name}
+              主讲人：{item?.organizer_info?.name}
             </Text>
           </View>
         )}
         ListEmptyComponent={() => (
           <View style={styles.meetingItem}>
-            <NoMeeting dataStatus="no_meeting" />
+            <NoMeeting
+              dataStatus={
+                meetRoomDataStatus === "error" ? "error_meeting" : "no_meeting"
+              }
+            />
           </View>
         )}
       />

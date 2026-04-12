@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
 
-const Index = () => {
+interface IndexProps {
+  meetRoomName: string;
+}
+
+const Index = ({ meetRoomName }: IndexProps) => {
   // 状态管理：实时时间（时分）、月日、星期
   const [timeInfo, setTimeInfo] = useState({
     timeHM: "",
@@ -70,7 +74,9 @@ const Index = () => {
           size={32}
           color="rgb(190, 219, 255)"
         />
-        <Text style={styles.roomText}>当前会议室</Text>
+        <Text style={styles.roomText}>
+          {meetRoomName ? meetRoomName : "当前会议室"}
+        </Text>
       </View>
 
       <View style={styles.timeDateContainer}>

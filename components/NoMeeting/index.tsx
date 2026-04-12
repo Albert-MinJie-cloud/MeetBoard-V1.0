@@ -4,10 +4,16 @@ import { View, StyleSheet, Text } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 interface IndexProps {
-  dataStatus: "no_meeting" | "have_meeting";
+  dataStatus: "no_meeting" | "error_meeting";
 }
 
 const Index = ({ dataStatus }: IndexProps) => {
+  const renderText = () => {
+    if (dataStatus === "error_meeting") {
+      return "会议数据异常";
+    }
+    return "暂无会议";
+  };
   return (
     <View style={styles.noMeetingContainer}>
       <FontAwesome6
@@ -17,7 +23,7 @@ const Index = ({ dataStatus }: IndexProps) => {
         color="black"
       />
       <Text style={styles.meetingText} ellipsizeMode="tail">
-        暂无会议
+        {renderText()}
       </Text>
     </View>
   );

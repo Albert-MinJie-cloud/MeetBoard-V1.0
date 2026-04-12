@@ -18,6 +18,54 @@ const feishuAxios = axios.create({
   },
 });
 
+// ✅ 请求拦截器（打印发出的请求）
+feishuAxios.interceptors.request.use(
+  (config) => {
+    console.log(
+      `
+🔵 REQUEST [${config.method?.toUpperCase()}]
+URL: ${config.baseURL}${config.url}
+Headers:`,
+      config.headers,
+      `
+Body:`,
+      config.data,
+    );
+    return config;
+  },
+  (error) => {
+    console.error("❌ REQUEST ERROR:", error);
+    return Promise.reject(error);
+  },
+);
+
+// ✅ 响应拦截器（打印返回结果）
+feishuAxios.interceptors.response.use(
+  (response) => {
+    console.log(
+      `
+✅ RESPONSE [${response.status}] ${response.config.method?.toUpperCase()}
+URL: ${response.config.baseURL}${response.config.url}
+Data:`,
+      response.data,
+    );
+    return response;
+  },
+  (error) => {
+    console.error(
+      `
+❌ RESPONSE ERROR [${error.response?.status || "NETWORK"}]
+URL: ${error.config?.baseURL}${error.config?.url}
+Message:`,
+      error.message,
+      `
+Response:`,
+      error.response?.data,
+    );
+    return Promise.reject(error);
+  },
+);
+
 /**
  * 1. 获取飞书tenant_access_token（POST + Body）
  */
@@ -86,12 +134,12 @@ export const getFreeBusyMeetingRoom = async (
 ) => {
   try {
     const token = await getTenantToken();
-    const roomIds = await Promise.all([getStorage(STORAGE_KEYS.ROOM_ID)]);
+    const roomIds = await getStorage(STORAGE_KEYS.ROOM_ID);
 
     // 关键修正：GET请求 + Query参数
     const res = await feishuAxios.get("/meeting_room/freebusy/batch_get", {
       params: {
-        room_ids: roomIds.join(","), // Query参数要求字符串（多个ID用逗号分隔）
+        room_ids: roomIds, // Query参数要求字符串（多个ID用逗号分隔）
         time_min: time_min,
         time_max: time_max,
       },
@@ -127,6 +175,39 @@ export const getMeetingRoomSummary = async (
     const res = await feishuAxios.post(
       "/meeting_room/summary/batch_get",
       { EventUids: eventUids },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    if (res?.data?.code === 0) {
+      return res?.data?.data;
+    } else {
+      throw new Error(
+        `会议室主题查询失败：${res?.data?.msg}（code:${res?.data?.code}）`,
+      );
+    }
+  } catch (e) {
+    throw e;
+  }
+};
+
+/**
+ * 4. 会议室名称查询
+ * @param roomIds 会议室ID列表
+ */
+export const getMeetingRoomName = async () => {
+  try {
+    const token = await getTenantToken();
+    const roomIds = await getStorage(STORAGE_KEYS.ROOM_ID);
+
+    const res = await feishuAxios.post(
+      "/vc/v1/rooms/mget",
+      {
+        room_ids: [roomIds],
+      },
       {
         headers: {
           Authorization: `Bearer ${token}`,
