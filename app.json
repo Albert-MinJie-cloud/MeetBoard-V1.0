@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "tkmeeting",
-    "slug": "tkmeeting",
-    "version": "1.0.0",
+    "slug": "my-app",
+    "version": "1.0.1",
     "orientation": "landscape",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
