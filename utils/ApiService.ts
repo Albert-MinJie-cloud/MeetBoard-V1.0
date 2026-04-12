@@ -3,8 +3,6 @@ import { getStorage, setStorage, STORAGE_KEYS } from "@/utils/StorageService";
 
 // 飞书配置（替换为你的实际值）
 const FEISHU_CONFIG = {
-  // APP_ID: "cli_a93ddaa2f2bb9bc3",
-  // APP_SECRET: "jYNtpr5fziKlRs5FD5Bnhd0gDmNj1OAY",
   // BASE_URL: "http://localhost:3000/api/feishu", // 代理服务器地址（安卓模拟器/真机替换为电脑IP）
   BASE_URL: "https://open.feishu.cn/open-apis", // 原生端调试（无代理）时用这个
 };
