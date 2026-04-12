@@ -1,5 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+
 import { getHourMinute } from "@/utils/Time";
 
 import NoMeeting from "@/components/NoMeeting";
@@ -23,6 +27,7 @@ interface MeetingInfoProps {
     timeValue?: object;
     titleValue?: object;
     personValue?: object;
+    labelText?: object;
   };
 }
 
@@ -61,21 +66,38 @@ const MeetingInfo = ({
     <View style={[styles.meetingInfoContainer, customStyles.container]}>
       {/* 会议时间行 */}
       <View style={[styles.infoRow, customStyles.row]}>
-        <Text style={[styles.infoLabel, customStyles.label]}>会议时间</Text>
+        <View style={[styles.infoLabel, customStyles.label]}>
+          <MaterialCommunityIcons
+            name="clock-time-three-outline"
+            size={16}
+            color="#999"
+          />
+          <Text style={[styles.labelText, customStyles.labelText]}>
+            会议时间
+          </Text>
+        </View>
         <Text style={[styles.infoTimeValue, customStyles.timeValue]}>
           {getHourMinute(start_time)} - {getHourMinute(end_time)}
         </Text>
       </View>
       {/* 会议主题行 */}
       <View style={[styles.infoRow, customStyles.row]}>
-        <Text style={[styles.infoLabel, customStyles.label]}>会议主题</Text>
+        <View style={[styles.infoLabel, customStyles.label]}>
+          <Ionicons name="chatbox-ellipses-outline" size={16} color="#999" />
+          <Text style={[styles.labelText, customStyles.labelText]}>
+            会议主题
+          </Text>
+        </View>
         <Text style={[styles.infoTitleValue, customStyles.titleValue]}>
           {summary}
         </Text>
       </View>
       {/* 预约人行 */}
       <View style={[styles.infoRow, customStyles.row]}>
-        <Text style={[styles.infoLabel, customStyles.label]}>预约人</Text>
+        <View style={[styles.infoLabel, customStyles.label]}>
+          <FontAwesome6 name="circle-user" size={14} color="#999" />
+          <Text style={[styles.labelText, customStyles.labelText]}>预约人</Text>
+        </View>
         <Text style={[styles.infoPersonValue, customStyles.personValue]}>
           {organizer_info?.name}
         </Text>
@@ -117,7 +139,13 @@ const styles = StyleSheet.create({
     flexDirection: "column", // 标签和值上下排列
   },
   infoLabel: {
+    flexDirection: "row",
+    alignItems: "center",
+    color: "#999",
+  },
+  labelText: {
     fontSize: 16,
+    marginLeft: 4,
     color: "#999",
   },
   infoTimeValue: {
