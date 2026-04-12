@@ -49,7 +49,6 @@ export default function DebugPanel({ onEditConfig, children }: Props) {
 
   // 核心：触摸监听（不会被任何子元素拦截）
   const handleTouch = (e: any) => {
-    console.log("handleTouch", e);
     if (showDebug) return;
 
     const { pageX, pageY } = e.nativeEvent; // ✅ 唯一稳定坐标
@@ -66,8 +65,6 @@ export default function DebugPanel({ onEditConfig, children }: Props) {
     if (lastTapTimeRef.current && now - lastTapTimeRef.current > TAP_TIMEOUT) {
       resetCornerSequence();
     }
-
-    console.log("ornerSequenceRef.current", cornerSequenceRef.current);
 
     // 顺序正确
     if (corner === cornerSequenceRef.current) {

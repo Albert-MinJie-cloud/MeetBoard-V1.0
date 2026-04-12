@@ -33,7 +33,6 @@ export const getTenantToken = async () => {
 
     // token有效则直接返回
     if (token && Date.now() < expireTime) {
-      // console.log("使用本地缓存的Token");
       return token;
     }
 

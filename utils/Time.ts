@@ -23,10 +23,6 @@ export function getMeetingStatus(startTime: string, endTime: string) {
   const start = new Date(startTime);
   const end = new Date(endTime);
 
-  // console.log("@--当前时间:", now);
-  // console.log("@--会议开始时间:", startTime, start);
-  // console.log("@--会议结束时间:", startTime, end);
-
   if (now < start) return "未开始";
   if (now > end) return "已结束";
   return "进行中";
