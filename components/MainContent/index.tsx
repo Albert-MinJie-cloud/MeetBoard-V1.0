@@ -41,17 +41,19 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     flexDirection: "row",
-    backgroundColor: "#f4f7f9",
+    backgroundColor: "#F5F7F9",
+    paddingVertical: 40,
+    paddingHorizontal: 60,
+    gap: 40,
   },
   currentMeetingContainer: {
     flex: 6,
-    paddingVertical: 40,
-    paddingHorizontal: 60,
     gap: 32,
     // shadowColor: "#000",
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 2,
+    // shadowOffset: { width: 0, height: 4 }, // 对应 0 4px
+    // shadowOpacity: 0.1, // 对应 10% 透明度
+    // shadowRadius: 6, // 对应 6px 模糊
+    // // Android 阴影（必须加）
     // elevation: 4,
   },
   nextMeetingContainer: {

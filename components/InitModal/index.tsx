@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   },
   saveBtn: {
     color: "#fff",
-    backgroundColor: "#1447e6",
+    backgroundColor: "#1677ff",
     fontWeight: "bold",
     fontSize: 14,
     borderRadius: 8,

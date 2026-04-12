@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { getHourMinute } from "@/utils/Time";
 
+import NoMeeting from "@/components/NoMeeting";
+
 /**
  * 会议信息展示组件
  * @param {Object} props - 组件属性
@@ -22,7 +24,10 @@ interface NextMeetingInfoProps {
 const NextMeetingInfo = ({ nextMeetings }: NextMeetingInfoProps) => {
   return (
     <View style={styles.nextMeetingsContainer}>
-      <Text style={styles.nextMeetingTitle}>下一场会议</Text>
+      <View style={styles.nextMeetingTitleContainer}>
+        <View style={styles.nextMeetingTitleIcon} />
+        <Text style={styles.nextMeetingTitle}>下一场会议</Text>
+      </View>
 
       <FlatList
         data={nextMeetings}
@@ -30,8 +35,11 @@ const NextMeetingInfo = ({ nextMeetings }: NextMeetingInfoProps) => {
         style={styles.meetingScrollView}
         showsVerticalScrollIndicator={false}
         bounces={false}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <View style={styles.meetingItem}>
+            <Text
+              style={styles.meetingTime}
+            >{`${getHourMinute(item?.start_time)} - ${getHourMinute(item?.end_time)}`}</Text>
             <Text
               style={styles.meetingTitle}
               numberOfLines={1}
@@ -40,53 +48,76 @@ const NextMeetingInfo = ({ nextMeetings }: NextMeetingInfoProps) => {
               {item?.summary}
             </Text>
             <Text
-              style={styles.meetingTimePerson}
-            >{`${getHourMinute(item?.start_time)} - ${getHourMinute(item?.end_time)} | ${item?.organizer_info?.name}`}</Text>
+              style={styles.meetingPerson}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {item?.organizer_info?.name}
+            </Text>
           </View>
         )}
-        // 可选：添加列表空数据提示
         ListEmptyComponent={() => (
-          <Text style={styles.emptyText}>暂无后续会议</Text>
+          <View style={styles.meetingItem}>
+            <NoMeeting dataStatus="no_meeting" />
+          </View>
         )}
       />
     </View>
   );
 };
 
-// 原有样式迁移（保留原命名，确保样式一致性）
 const styles = StyleSheet.create({
   nextMeetingsContainer: {
-    padding: 10,
+    flex: 1,
+  },
+  nextMeetingTitleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 32,
+  },
+  nextMeetingTitleIcon: {
+    width: 6,
+    height: 28,
+    borderRadius: 4,
+    backgroundColor: "#1677ff",
+    marginRight: 10,
   },
   nextMeetingTitle: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
-    marginBottom: 15,
+    color: "#4E5969",
   },
   meetingScrollView: {
-    flex: 1, // 撑满剩余空间
-    marginTop: 5, // 和标题保持间距
+    flex: 1,
+    paddingRight: 4,
   },
   meetingItem: {
     borderWidth: 1,
     borderColor: "#eee",
-    padding: 10,
-    marginBottom: 10,
+    borderRadius: 12,
+    backgroundColor: "#fff",
+    gap: 20,
+    padding: 32,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 }, // 对应 0 4px
+    shadowOpacity: 0.1, // 对应 10% 透明度
+    shadowRadius: 6, // 对应 6px 模糊
+    elevation: 4,
+  },
+  meetingTime: {
+    fontSize: 24,
+    color: "#1677ff",
   },
   meetingTitle: {
-    fontSize: 16,
-    marginBottom: 5,
+    fontSize: 28,
+    color: "#1d2129",
+    fontWeight: "600",
   },
-  meetingTimePerson: {
-    fontSize: 14,
-    color: "#666",
-  },
-  // 新增空数据样式
-  emptyText: {
-    fontSize: 14,
-    color: "#999",
-    textAlign: "center",
-    marginTop: 20,
+  meetingPerson: {
+    fontSize: 20,
+    color: "#86909c",
+    fontWeight: "200",
   },
 });
 

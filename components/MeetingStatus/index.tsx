@@ -52,9 +52,10 @@ const styles = StyleSheet.create({
     gap: 8,
     height: 120,
     shadowColor: "#000",
-    // shadowOffset: { width: 4, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 4 }, // 对应 0 4px
+    shadowOpacity: 0.1, // 对应 10% 透明度
+    shadowRadius: 6, // 对应 6px 模糊
+    // Android 阴影（必须加）
     elevation: 4,
   },
   activeContainer: {

@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { getHourMinute } from "@/utils/Time";
 
+import NoMeeting from "@/components/NoMeeting";
+
 interface MeetingInfoProps {
   isMeetingActive: boolean;
   meetingInfo: {
@@ -36,8 +38,8 @@ const MeetingInfo = ({
 
   if (!isMeetingActive) {
     return (
-      <View style={[styles.meetingInfoContainer, customStyles.container]}>
-        <Text style={styles.emptyText}>当前无会议进行中</Text>
+      <View style={[styles.noMeetingInfoContainer, customStyles.container]}>
+        <NoMeeting dataStatus="no_meeting" />
       </View>
     );
   }
@@ -72,10 +74,25 @@ const styles = StyleSheet.create({
   meetingInfoContainer: {
     flex: 1,
     borderRadius: 16,
+    backgroundColor: "#fff",
     shadowColor: "#000",
-    // shadowOffset: { width: 4, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 4 }, // 对应 0 4px
+    shadowOpacity: 0.1, // 对应 10% 透明度
+    shadowRadius: 6, // 对应 6px 模糊
+    // Android 阴影（必须加）
+    elevation: 4,
+  },
+  noMeetingInfoContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    borderRadius: 16,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 }, // 对应 0 4px
+    shadowOpacity: 0.1, // 对应 10% 透明度
+    shadowRadius: 6, // 对应 6px 模糊
+    // Android 阴影（必须加）
     elevation: 4,
   },
   infoRow: {
