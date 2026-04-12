@@ -225,6 +225,95 @@ MeetingBoard.fetchData() 启动
     60秒后重复
 ```
 
+### UML时序图
+
+#### 初始化流程时序图
+
+```mermaid
+sequenceDiagram
+    participant App as 应用启动
+    participant Index as index.tsx
+    participant Storage as AsyncStorage
+    participant InitModal as InitModal
+    participant MeetingBoard as MeetingBoard
+
+    App->>Index: 页面挂载
+    Index->>Storage: 检查本地ROOM_ID
+    alt ROOM_ID 存在
+        Storage-->>Index: 返回ROOM_ID
+        Index->>MeetingBoard: 显示主看板
+        MeetingBoard->>MeetingBoard: 开始数据拉取循环
+    else ROOM_ID 不存在
+        Storage-->>Index: 返回null
+        Index->>InitModal: 显示配置弹窗
+        InitModal->>InitModal: 等待用户输入
+        Note over InitModal: ROOM_ID/APP_ID/APP_SECRET
+        InitModal->>Storage: 存储配置信息
+        InitModal-->>Index: 返回成功
+        Index->>MeetingBoard: 显示主看板
+        MeetingBoard->>MeetingBoard: 开始数据拉取循环
+    end
+```
+
+#### 数据获取流程时序图
+
+```mermaid
+sequenceDiagram
+    participant MeetingBoard as MeetingBoard
+    participant Timer as Timer (60s)
+    participant ApiService as ApiService
+    participant Storage as AsyncStorage
+    participant Feishu as 飞书API
+    participant UI as UI更新
+
+    MeetingBoard->>MeetingBoard: setLoading(true)
+    MeetingBoard->>ApiService: fetchData()
+    
+    ApiService->>Storage: 读取缓存Token
+    Storage-->>ApiService: 返回Token
+    
+    alt Token 有效且未过期
+        ApiService-->>ApiService: 使用缓存Token
+    else Token 过期或不存在
+        ApiService->>Feishu: POST /auth/v3/tenant_access_token/internal
+        Feishu-->>ApiService: 返回新Token
+        ApiService->>Storage: 存储Token + 过期时间
+    end
+    
+    Note over ApiService: 并行请求3个API
+    par API并行调用
+        ApiService->>Feishu: 1️⃣ getMeetingRoomName()
+    and
+        ApiService->>Feishu: 2️⃣ getFreeBusyMeetingRoom()
+    and
+        ApiService->>Feishu: 3️⃣ getMeetingRoomSummary()
+    end
+    
+    Feishu-->>ApiService: 返回会议室名称
+    Feishu-->>ApiService: 返回忙闲数据
+    Feishu-->>ApiService: 返回会议详情
+    
+    ApiService->>ApiService: 合并数据
+    ApiService->>ApiService: 更新状态
+    
+    alt 无会议
+        ApiService->>ApiService: meetRoomDataStatus="empty"
+    else 异常
+        ApiService->>ApiService: meetRoomDataStatus="error"
+    else 有会议
+        ApiService->>ApiService: meetRoomDataStatus="haveMeeting"
+    end
+    
+    ApiService-->>MeetingBoard: 返回数据
+    MeetingBoard->>MeetingBoard: setMeetingList(data)
+    MeetingBoard->>MeetingBoard: setLoading(false)
+    MeetingBoard->>UI: 组件重新渲染
+    UI-->>UI: 显示会议信息
+    
+    MeetingBoard->>Timer: 60秒后执行
+    Timer-->>MeetingBoard: 触发下一轮fetchData()
+```
+
 ### 飞书API集成
 
 #### 1. 获取Access Token
