@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { View, StyleSheet, Alert } from "react-native";
+import Toast from "react-native-toast-message";
 
 import {
   getFreeBusyMeetingRoom,
@@ -80,7 +81,11 @@ const Index = ({ onEditConfig }: IndexProps) => {
       // console.log("合并后的会议列表:", mergedList);
     } catch (error) {
       console.error("数据加载失败", error);
-      Alert.alert("错误", "会议数据加载失败，请稍后重试");
+      Toast.show({
+        type: "error",
+        text1: "会议数据加载失败",
+        text2: "请检查网络或配置后重试",
+      });
     } finally {
       setLoading(false);
     }
@@ -109,11 +114,9 @@ const Index = ({ onEditConfig }: IndexProps) => {
   );
 };
 
-// 样式适配1920*1080横屏（安卓11）
 const styles = StyleSheet.create({
   meetingBoardContainer: {
     flex: 1,
-    backgroundColor: "#1447e6",
   },
 });
 

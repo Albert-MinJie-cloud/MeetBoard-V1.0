@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Modal, StyleSheet, Alert } from "react-native";
+import { View, Text, TextInput, Modal, StyleSheet } from "react-native";
+import Toast from "react-native-toast-message";
 
 interface InitFormValues {
   roomId: string;
@@ -42,7 +43,11 @@ export default function Index({
   // 保存按钮逻辑
   const handleSave = () => {
     if (!roomId.trim() || !appId.trim() || !appSecret.trim()) {
-      Alert.alert("提示", "请完整填写配置信息");
+      Toast.show({
+        type: "info",
+        text1: "提示",
+        text2: "请先完成初始化配置信息",
+      });
       return;
     }
 
@@ -63,28 +68,39 @@ export default function Index({
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>
-            {showCancel ? "编辑" : "初始化"}会议室配置信息
+            {showCancel ? "编辑" : "初始化"}会议室配置
           </Text>
           <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="room_id"
-              value={roomId}
-              onChangeText={setRoomId}
-              autoFocus
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="app_id"
-              value={appId}
-              onChangeText={setAppId}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="app_secret"
-              value={appSecret}
-              onChangeText={setAppSecret}
-            />
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>会议室ID</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="请输入 room_id"
+                value={roomId}
+                onChangeText={setRoomId}
+                autoFocus
+              />
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>应用ID</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="请输入 app_id"
+                value={appId}
+                onChangeText={setAppId}
+              />
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>应用密钥</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="请输入 app_secret"
+                value={appSecret}
+                onChangeText={setAppSecret}
+              />
+            </View>
           </View>
 
           <View style={styles.modalBtnContainer}>
@@ -111,51 +127,64 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: 600,
-    backgroundColor: "#F2F2F2",
-    borderRadius: 10,
-    padding: 20,
+    backgroundColor: "rgba(250,250,250,0.85)",
+    borderRadius: 24,
+    padding: 24,
+    paddingHorizontal: 32,
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 15,
+    marginBottom: 24,
     textAlign: "center",
   },
   inputContainer: {
-    gap: 20,
-    marginBottom: 20,
+    gap: 24,
+    marginBottom: 24,
+  },
+  inputGroup: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  label: {
+    width: 80,
+    fontSize: 14,
+    marginRight: 8,
+    fontWeight: "500",
+    color: "#333",
   },
   input: {
+    flex: 1,
     borderWidth: 1,
     borderColor: "#ccc",
     backgroundColor: "#fff",
-    color: "#333",
-    borderRadius: 5,
-    padding: 10,
+    borderRadius: 8,
+    padding: 12,
     fontSize: 16,
+    color: "#333",
   },
   modalBtnContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    gap: 20,
+    gap: 24,
   },
   cancelBtn: {
     color: "#333",
     backgroundColor: "#fff",
     fontWeight: "bold",
-    fontSize: 18,
-    borderRadius: 5,
-    paddingHorizontal: 30,
-    paddingVertical: 10,
+    fontSize: 14,
+    borderRadius: 8,
+    paddingHorizontal: 32,
+    paddingVertical: 12,
   },
   saveBtn: {
     color: "#fff",
     backgroundColor: "#1447e6",
     fontWeight: "bold",
-    fontSize: 18,
-    borderRadius: 5,
-    paddingHorizontal: 30,
-    paddingVertical: 10,
+    fontSize: 14,
+    borderRadius: 8,
+    paddingHorizontal: 32,
+    paddingVertical: 12,
   },
 });

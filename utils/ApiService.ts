@@ -54,7 +54,7 @@ export const getTenantToken = async () => {
       },
     );
 
-    if (res.data.code === 0) {
+    if (res?.data?.code === 0) {
       const newToken = res?.data?.tenant_access_token;
       const expiresIn = res?.data?.expire || 7200; // 默认2小时
       const newExpireTime = Date.now() + expiresIn * 1000;
@@ -102,7 +102,6 @@ export const getFreeBusyMeetingRoom = async (
     });
 
     if (res?.data?.code === 0) {
-      // console.log("空闲会议室查询成功：", res.data.data);
       return res?.data?.data;
     } else {
       throw new Error(
@@ -110,7 +109,6 @@ export const getFreeBusyMeetingRoom = async (
       );
     }
   } catch (e) {
-    // console.error("getFreeBusyMeetingRoom 错误：", (e as Error).message);
     throw e;
   }
 };
@@ -138,7 +136,6 @@ export const getMeetingRoomSummary = async (
     );
 
     if (res?.data?.code === 0) {
-      // console.log("会议室主题查询成功：", res.data.data);
       return res?.data?.data;
     } else {
       throw new Error(
@@ -146,7 +143,6 @@ export const getMeetingRoomSummary = async (
       );
     }
   } catch (e) {
-    // console.error("getMeetingRoomSummary 错误：", (e as Error).message);
     throw e;
   }
 };

@@ -56,9 +56,6 @@ const NextMeetingInfo = ({ nextMeetings }: NextMeetingInfoProps) => {
 // 原有样式迁移（保留原命名，确保样式一致性）
 const styles = StyleSheet.create({
   nextMeetingsContainer: {
-    flex: 3,
-    backgroundColor: "white",
-    borderRadius: 5,
     padding: 10,
   },
   nextMeetingTitle: {

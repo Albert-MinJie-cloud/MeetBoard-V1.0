@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 
 import MeetingStatus from "@/components/MeetingStatus";
-import MeetingInfo from "@/components/MeetingInfo";
+import CurrentMeetingInfo from "@/components/CurrentMeetingInfo";
 import NextMeetingInfo from "@/components/NextMeetingInfo";
 
 interface IndexProps {
@@ -23,30 +23,39 @@ const Index = ({ meetingList }: IndexProps) => {
       <View style={styles.currentMeetingContainer}>
         <MeetingStatus isMeetingActive={isMeetingActive} />
 
-        <MeetingInfo
+        <CurrentMeetingInfo
           isMeetingActive={isMeetingActive}
           meetingInfo={currentMeeting}
         />
       </View>
 
       {/* 右侧下一场会议 */}
-      <NextMeetingInfo nextMeetings={nextMeetings}></NextMeetingInfo>
+      <View style={styles.nextMeetingContainer}>
+        <NextMeetingInfo nextMeetings={nextMeetings}></NextMeetingInfo>
+      </View>
     </View>
   );
 };
 
-// 样式适配1920*1080横屏（安卓11）
 const styles = StyleSheet.create({
   content: {
-    flexDirection: "row",
     flex: 1,
-    gap: 10,
+    flexDirection: "row",
+    backgroundColor: "#f4f7f9",
   },
   currentMeetingContainer: {
-    flex: 5,
-    backgroundColor: "white",
-    borderRadius: 5,
-    padding: 15,
+    flex: 6,
+    paddingVertical: 40,
+    paddingHorizontal: 60,
+    gap: 32,
+    // shadowColor: "#000",
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 2,
+    // elevation: 4,
+  },
+  nextMeetingContainer: {
+    flex: 4,
   },
 });
 

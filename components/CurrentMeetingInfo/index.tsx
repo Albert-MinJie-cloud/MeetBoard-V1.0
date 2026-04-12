@@ -70,7 +70,13 @@ const MeetingInfo = ({
 // 原有样式迁移（保留原命名，确保样式一致性）
 const styles = StyleSheet.create({
   meetingInfoContainer: {
-    gap: 15, // 行与行之间的间距
+    flex: 1,
+    borderRadius: 16,
+    shadowColor: "#000",
+    // shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
   },
   infoRow: {
     flexDirection: "column", // 标签和值上下排列

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
+import Toast from "react-native-toast-message";
 
 import {
   getStorage,
@@ -56,9 +57,14 @@ const Index = () => {
     await setStorage(STORAGE_KEYS.ROOM_ID, values.roomId);
     await setStorage(STORAGE_KEYS.APP_ID, values.appId);
     await setStorage(STORAGE_KEYS.APP_SECRET, values.appSecret);
-
     await removeStorage(STORAGE_KEYS.TENANT_TOKEN);
     await removeStorage(STORAGE_KEYS.TOKEN_EXPIRE_TIME);
+
+    Toast.show({
+      type: "success",
+      text1: "配置保存成功",
+      text2: "会议室信息已更新",
+    });
 
     setFormValues(values);
     setIsEditingConfig(false);
@@ -89,7 +95,11 @@ const Index = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      style={styles.containerBg}
+      resizeMode="stretch"
+      source={require("../../assets/images/bg.jpg")}
+    >
       <InitModal
         visible={modalVisible}
         initialValues={formValues}
@@ -97,16 +107,19 @@ const Index = () => {
         onClose={handleCancelEdit}
         showCancel={isEditingConfig}
       />
-    </View>
+    </ImageBackground>
   );
 };
 
-// 样式适配1920*1080横屏（安卓11）
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1447e6",
-    padding: 20,
+  },
+
+  containerBg: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
   },
 });
 
