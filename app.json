@@ -5,7 +5,6 @@
     "version": "1.0.0",
     "orientation": "landscape",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -14,14 +13,11 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/images/android-icon-foreground.png"
       },
       "minSdkVersion": 30,
       "screenOrientation": "landscape",
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
       "package": "com.min_jie_expo.myapp"
     },
     "web": {
@@ -48,7 +44,6 @@
       "reactCompiler": true
     },
     "extra": {
-      "router": {},
       "eas": {
         "projectId": "e516843f-ddf6-437e-b815-9b1570765ad1"
       }
