@@ -13,6 +13,7 @@ const Index = ({ meetRoomName }: IndexProps) => {
     weekDay: "",
     monthDay: "",
     timeHMS: "",
+    yearsDay: "",
   });
 
   // 格式化获取当前时间：hh:mm、星期、月日
@@ -43,23 +44,26 @@ const Index = ({ meetRoomName }: IndexProps) => {
     const day = String(now.getDate()).padStart(2, "0");
     const monthDay = `${month}月${day}日`;
 
+    const years = String(now.getFullYear()).padStart(4, "0");
+    const yearsDay = `${years}年`;
+
     return {
       timeHMS, // 时分秒：如 10:30:45
       timeHM, // 时分：如 10:30
       weekDay, // 星期：如 星期四
       monthDay, // 月日：如 04月03日
+      yearsDay,
       fullDate: `${monthDay} ${weekDay}`, // 组合：如 04月03日 星期四
     };
   };
 
-  // 定时更新时间（每分钟更新一次，兼顾性能）
+  // 定时更新时间（1秒更新一次，兼顾性能）
   useEffect(() => {
     // 初始化更新
     setTimeInfo(getFormattedDateTime());
-    // 每分钟刷新一次
     const timer = setInterval(() => {
       setTimeInfo(getFormattedDateTime());
-    }, 30);
+    }, 1000);
 
     // 组件卸载清除定时器
     return () => clearInterval(timer);
@@ -79,6 +83,8 @@ const Index = ({ meetRoomName }: IndexProps) => {
         </Text>
       </View>
 
+      <Text style={styles.currentTimeText}>{timeInfo.timeHM}</Text>
+
       <View style={styles.timeDateContainer}>
         <View style={styles.dateContainer}>
           <FontAwesome5
@@ -87,11 +93,10 @@ const Index = ({ meetRoomName }: IndexProps) => {
             size={24}
             color="rgb(190, 219, 255)"
           />
+          <Text style={styles.dateText}>{timeInfo.yearsDay}</Text>
           <Text style={styles.dateText}>{timeInfo.monthDay}</Text>
           <Text style={styles.dateText}>{timeInfo.weekDay}</Text>
         </View>
-
-        <Text style={styles.currentTimeText}>{timeInfo.timeHM}</Text>
       </View>
     </View>
   );
@@ -99,18 +104,11 @@ const Index = ({ meetRoomName }: IndexProps) => {
 
 const styles = StyleSheet.create({
   header: {
-    height: 120,
-    paddingHorizontal: 60,
-    backgroundColor: "#1677ff",
+    height: 80,
+    paddingHorizontal: 24,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 }, // 对应 0 4px
-    shadowOpacity: 0.1, // 对应 10% 透明度
-    shadowRadius: 6, // 对应 6px 模糊
-    // Android 阴影（必须加）
-    elevation: 4,
   },
   fontIconContainer: {
     flexDirection: "row",
@@ -121,16 +119,15 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   roomText: {
-    fontSize: 48,
+    fontSize: 32,
     color: "white",
-    fontWeight: "bold",
   },
   timeDateContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
   currentTimeText: {
-    fontSize: 48,
+    fontSize: 32,
     color: "white",
     fontWeight: "bold",
   },
@@ -139,9 +136,8 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   dateContainer: {
-    marginRight: 24,
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+    paddingVertical: 6,
+    paddingHorizontal: 18,
     borderRadius: 30,
     backgroundColor: "rgba(25, 60, 184, 0.5)",
     flexDirection: "row",
@@ -149,7 +145,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   dateText: {
-    fontSize: 24,
+    fontSize: 20,
     color: "white",
   },
 });

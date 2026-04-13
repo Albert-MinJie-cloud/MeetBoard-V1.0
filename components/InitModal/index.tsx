@@ -33,12 +33,7 @@ export default function Index({
       setAppId(initialValues?.appId ?? "");
       setAppSecret(initialValues?.appSecret ?? "");
     }
-  }, [
-    initialValues?.appId,
-    initialValues?.appSecret,
-    initialValues?.roomId,
-    visible,
-  ]);
+  }, [initialValues, visible]);
 
   // 保存按钮逻辑
   const handleSave = () => {
@@ -151,7 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginRight: 8,
     fontWeight: "500",
-    color: "#333",
+    color: "#000",
   },
   input: {
     flex: 1,
@@ -161,7 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
-    color: "#333",
+    color: "#000",
   },
   modalBtnContainer: {
     flexDirection: "row",
@@ -170,7 +165,7 @@ const styles = StyleSheet.create({
     gap: 24,
   },
   cancelBtn: {
-    color: "#333",
+    color: "#000",
     backgroundColor: "#fff",
     fontWeight: "bold",
     fontSize: 14,

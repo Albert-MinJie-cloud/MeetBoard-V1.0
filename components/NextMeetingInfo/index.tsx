@@ -11,8 +11,8 @@ import NoMeeting from "@/components/NoMeeting";
  */
 
 interface NextMeetingInfoProps {
-  meetRoomDataStatus: "empty" | "error" | "haveMeeting";
   nextMeetings: {
+    uid: string;
     summary: string;
     start_time: string;
     end_time: string;
@@ -22,10 +22,7 @@ interface NextMeetingInfoProps {
   }[];
 }
 
-const NextMeetingInfo = ({
-  nextMeetings,
-  meetRoomDataStatus,
-}: NextMeetingInfoProps) => {
+const NextMeetingInfo = ({ nextMeetings }: NextMeetingInfoProps) => {
   return (
     <View style={styles.nextMeetingsContainer}>
       <View style={styles.nextMeetingTitleContainer}>
@@ -35,15 +32,12 @@ const NextMeetingInfo = ({
 
       <FlatList
         data={nextMeetings}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item?.uid?.toString()}
         style={styles.meetingScrollView}
         showsVerticalScrollIndicator={false}
         bounces={false}
         renderItem={({ item, index }) => (
           <View style={styles.meetingItem}>
-            <Text
-              style={styles.meetingTime}
-            >{`${getHourMinute(item?.start_time)} - ${getHourMinute(item?.end_time)}`}</Text>
             <Text
               style={styles.meetingTitle}
               numberOfLines={1}
@@ -51,24 +45,13 @@ const NextMeetingInfo = ({
             >
               {item?.summary}
             </Text>
-            <Text
-              style={styles.meetingPerson}
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              主讲人：{item?.organizer_info?.name}
+
+            <Text style={styles.meetingPerson}>
+              {`${getHourMinute(item?.start_time)} - ${getHourMinute(item?.end_time)} | ${item?.organizer_info?.name}`}
             </Text>
           </View>
         )}
-        ListEmptyComponent={() => (
-          <View style={styles.meetingItem}>
-            <NoMeeting
-              dataStatus={
-                meetRoomDataStatus === "error" ? "error_meeting" : "no_meeting"
-              }
-            />
-          </View>
-        )}
+        ListEmptyComponent={() => <NoMeeting />}
       />
     </View>
   );
@@ -81,7 +64,7 @@ const styles = StyleSheet.create({
   nextMeetingTitleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 32,
+    marginBottom: 24,
   },
   nextMeetingTitleIcon: {
     width: 6,
@@ -92,8 +75,8 @@ const styles = StyleSheet.create({
   },
   nextMeetingTitle: {
     fontSize: 28,
-    fontWeight: "bold",
-    color: "#4E5969",
+    fontWeight: "600",
+    color: "#000",
   },
   meetingScrollView: {
     flex: 1,
@@ -101,31 +84,20 @@ const styles = StyleSheet.create({
   },
   meetingItem: {
     borderWidth: 1,
-    borderColor: "#eee",
+    borderColor: "#ddd",
     borderRadius: 12,
-    backgroundColor: "#fff",
-    gap: 20,
-    padding: 32,
-    marginBottom: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 }, // 对应 0 4px
-    shadowOpacity: 0.1, // 对应 10% 透明度
-    shadowRadius: 6, // 对应 6px 模糊
-    elevation: 4,
-  },
-  meetingTime: {
-    fontSize: 24,
-    color: "#1677ff",
+    gap: 4,
+    padding: 24,
+    marginBottom: 12,
   },
   meetingTitle: {
-    fontSize: 28,
-    color: "#1d2129",
+    fontSize: 24,
+    color: "#000",
     fontWeight: "600",
   },
   meetingPerson: {
     fontSize: 20,
-    color: "#86909c",
-    fontWeight: "200",
+    color: "#666",
   },
 });
 

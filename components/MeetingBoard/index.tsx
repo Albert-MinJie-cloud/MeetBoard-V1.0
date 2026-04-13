@@ -26,17 +26,14 @@ const Index = ({ onEditConfig }: IndexProps) => {
   // 会议室名称
   const [meetRoomName, setMeetRoomName] = useState("");
 
-  // 会议室数据状态
-  const [meetRoomDataStatus, setMeetRoomDataStatus] = useState<
-    "empty" | "error" | "haveMeeting"
-  >("empty");
-
   // 定时器Ref（防止内存泄漏）
   const timerRef = useRef<NodeJS.Timeout | null | number>(null);
 
   // 核心：拉取全量数据（包含条件调用）
   const fetchData = async () => {
-    setLoading(true);
+    // 第二次调用时候不需要loading动画
+    // 首次加载在 useEffect 中已经设置了 loading(true)，这里不需要重复设置
+    // setLoading(true);
     try {
       // 1. 查询会议室名称
       const roomNameRes = await getMeetingRoomName();
@@ -70,11 +67,9 @@ const Index = ({ onEditConfig }: IndexProps) => {
       // 2. 无会议：直接清空数据
       if (validMeetingData?.length === 0) {
         setMeetingList([]);
-        setMeetRoomDataStatus("empty");
         setLoading(false);
         return;
       }
-
       // 3. 有会议：调用第三个接口查询详情
       const eventUids = validMeetingData?.map((item: any) => ({
         uid: item.uid,
@@ -90,18 +85,14 @@ const Index = ({ onEditConfig }: IndexProps) => {
         return { ...status, ...info };
       });
 
-      if (mergedList?.length && mergedList?.length > 0) {
-        setMeetRoomDataStatus("haveMeeting");
-      }
-
       setMeetingList(mergedList);
     } catch (error) {
       console.error("数据加载失败", error);
-      setMeetRoomDataStatus("error");
       Toast.show({
         type: "error",
         text1: "会议数据加载失败",
         text2: "请检查网络或配置后重试",
+        position: "bottom",
       });
     } finally {
       setLoading(false);
@@ -133,11 +124,7 @@ const Index = ({ onEditConfig }: IndexProps) => {
     <DebugPanel onEditConfig={onEditConfig}>
       <View style={styles.meetingBoardContainer}>
         <Header meetRoomName={meetRoomName} />
-        <MainContent
-          meetingList={meetingList}
-          meetRoomDataStatus={meetRoomDataStatus}
-        />
-        {/* 这里加一个数据更新时间，展示在右下角，避开那个点击感应的区域 */}
+        <MainContent meetingList={meetingList} />
       </View>
     </DebugPanel>
   );
@@ -156,6 +143,7 @@ const styles = StyleSheet.create({
   },
   meetingBoardContainer: {
     flex: 1,
+    backgroundColor: "#1677ff",
   },
 });
 

@@ -6,7 +6,8 @@
 
 **核心用途**: 会议室门口/走廊投屏设备，让与会者快速了解会议室状态和时间
 
-**支持平台**: 
+**支持平台**:
+
 - 🔴 Android 投屏设备（主要目标）
 - 🍎 iOS
 - 🌐 Web
@@ -16,40 +17,47 @@
 ## 🔧 技术栈
 
 ### 核心框架
+
 - **Expo SDK**: ~54.0.33 — 快速开发和构建工具链
 - **React**: 19.1.0 — UI库和状态管理
 - **React Native**: 0.81.5 — 跨平台原生开发
 - **TypeScript**: ~5.9.2 — 类型安全
 
 ### 路由和导航
+
 - **Expo Router**: ~6.0.23 — 基于文件的路由系统（类似Next.js）
   - 自动生成路由
   - 类型安全的动态路由
   - 深链接支持
 
 ### 样式和动画
+
 - **React Native StyleSheet**: 原生样式系统
 - **react-native-reanimated**: ~4.1.1 — 高性能动画库（用于状态闪烁效果）
 - **react-native-gesture-handler**: ~2.28.0 — 手势识别（四角触摸检测）
 
 ### 网络和数据
+
 - **axios**: ^1.14.0 — HTTP客户端（飞书API请求）
   - 请求/响应拦截器
   - 自动超时控制（15秒）
   - 错误日志打印
 
 ### 本地存储
+
 - **@react-native-async-storage**: 2.2.0 — 异步本地存储
   - 存储API凭证（ROOM_ID、APP_ID、APP_SECRET）
   - 存储Token缓存和过期时间
 
 ### UI和通知
+
 - **react-native-toast-message**: ^2.3.3 — 轻量级提示框
   - 错误提示
   - 成功反馈
 - **@expo/vector-icons**: ^15.0.3 — 图标库
 
 ### 开发工具
+
 - **ESLint**: ^9.25.0 — 代码检查
 - **Metro**: React Native打包工具（已集成）
 
@@ -268,10 +276,10 @@ sequenceDiagram
 
     MeetingBoard->>MeetingBoard: setLoading(true)
     MeetingBoard->>ApiService: fetchData()
-    
+
     ApiService->>Storage: 读取缓存Token
     Storage-->>ApiService: 返回Token
-    
+
     alt Token 有效且未过期
         ApiService-->>ApiService: 使用缓存Token
     else Token 过期或不存在
@@ -279,7 +287,7 @@ sequenceDiagram
         Feishu-->>ApiService: 返回新Token
         ApiService->>Storage: 存储Token + 过期时间
     end
-    
+
     Note over ApiService: 并行请求3个API
     par API并行调用
         ApiService->>Feishu: 1️⃣ getMeetingRoomName()
@@ -288,14 +296,14 @@ sequenceDiagram
     and
         ApiService->>Feishu: 3️⃣ getMeetingRoomSummary()
     end
-    
+
     Feishu-->>ApiService: 返回会议室名称
     Feishu-->>ApiService: 返回忙闲数据
     Feishu-->>ApiService: 返回会议详情
-    
+
     ApiService->>ApiService: 合并数据
     ApiService->>ApiService: 更新状态
-    
+
     alt 无会议
         ApiService->>ApiService: meetRoomDataStatus="empty"
     else 异常
@@ -303,13 +311,13 @@ sequenceDiagram
     else 有会议
         ApiService->>ApiService: meetRoomDataStatus="haveMeeting"
     end
-    
+
     ApiService-->>MeetingBoard: 返回数据
     MeetingBoard->>MeetingBoard: setMeetingList(data)
     MeetingBoard->>MeetingBoard: setLoading(false)
     MeetingBoard->>UI: 组件重新渲染
     UI-->>UI: 显示会议信息
-    
+
     MeetingBoard->>Timer: 60秒后执行
     Timer-->>MeetingBoard: 触发下一轮fetchData()
 ```
@@ -317,6 +325,7 @@ sequenceDiagram
 ### 飞书API集成
 
 #### 1. 获取Access Token
+
 ```http
 POST /auth/v3/tenant_access_token/internal
 Content-Type: application/json
@@ -335,6 +344,7 @@ Content-Type: application/json
 ```
 
 #### 2. 查询会议室忙闲
+
 ```http
 GET /meeting_room/freebusy/batch_get?room_ids=xxx&time_min=xxx&time_max=xxx
 Authorization: Bearer {token}
@@ -358,6 +368,7 @@ Authorization: Bearer {token}
 ```
 
 #### 3. 查询会议详情（主题/组织者）
+
 ```http
 POST /meeting_room/summary/batch_get
 Authorization: Bearer {token}
@@ -385,6 +396,7 @@ Content-Type: application/json
 ```
 
 #### 4. 查询会议室名称
+
 ```http
 POST /vc/v1/rooms/mget
 Authorization: Bearer {token}
@@ -414,17 +426,18 @@ Content-Type: application/json
 ```typescript
 STORAGE_KEYS = {
   // 用户配置
-  ROOM_ID: "meeting_room_id",           // 会议室ID
-  APP_ID: "meeting_app_id",             // 飞书应用ID
-  APP_SECRET: "meeting_app_secret",     // 飞书应用密钥
-  
+  ROOM_ID: "meeting_room_id", // 会议室ID
+  APP_ID: "meeting_app_id", // 飞书应用ID
+  APP_SECRET: "meeting_app_secret", // 飞书应用密钥
+
   // Token缓存
-  TENANT_TOKEN: "tenant_access_token",  // Access Token
-  TOKEN_EXPIRE_TIME: "token_expire_time" // 过期时间戳（13位）
-}
+  TENANT_TOKEN: "tenant_access_token", // Access Token
+  TOKEN_EXPIRE_TIME: "token_expire_time", // 过期时间戳（13位）
+};
 ```
 
 **Token缓存策略**:
+
 - 首次请求Token时，存储到期时间 = 当前时间 + 7200秒（2小时）
 - 后续请求前检查：`现在时间 < 存储的到期时间`
 - 未过期使用本地Token，避免重复请求
@@ -436,27 +449,27 @@ STORAGE_KEYS = {
 
 ### 色彩系统
 
-| 用途 | 颜色 | 十六进制 |
-|------|------|----------|
+| 用途       | 颜色   | 十六进制  |
+| ---------- | ------ | --------- |
 | 主色（蓝） | 品牌蓝 | `#1677ff` |
-| 背景色 | 浅灰 | `#F5F7F9` |
-| 会议时间 | 蓝 | `#1677ff` |
-| 会议主题 | 深灰 | `#1d2129` |
-| 标签文本 | 中灰 | `#999` |
-| 辅助文本 | 浅灰 | `#86909c` |
-| 空闲状态 | 绿 | `#90C36B` |
-| 进行中状态 | 红 | `#E62E2E` |
-| 异常状态 | 灰 | `#999999` |
+| 背景色     | 浅灰   | `#F5F7F9` |
+| 会议时间   | 蓝     | `#1677ff` |
+| 会议主题   | 深灰   | `#000`    |
+| 标签文本   | 中灰   | `#999`    |
+| 辅助文本   | 浅灰   | `#666`    |
+| 空闲状态   | 绿     | `#90C36B` |
+| 进行中状态 | 红     | `#E62E2E` |
+| 异常状态   | 灰     | `#999999` |
 
 ### 排版系统
 
-| 用途 | 大小 | 权重 |
-|------|------|------|
-| 页面标题 | 28px | 700 |
-| 会议主题 | 30px | 700 |
-| 子标题 | 24px | 600 |
-| 普通文本 | 16px | 400 |
-| 小文本 | 12-14px | 400 |
+| 用途     | 大小    | 权重 |
+| -------- | ------- | ---- |
+| 页面标题 | 28px    | 700  |
+| 会议主题 | 30px    | 700  |
+| 子标题   | 24px    | 600  |
+| 普通文本 | 16px    | 400  |
+| 小文本   | 12-14px | 400  |
 
 ### 间距系统
 
@@ -478,6 +491,7 @@ elevation: 4,                               // Android 阴影
 ### 布局系统
 
 **首页布局** (MainContent):
+
 - Header: 固定 120px 高
 - 内容区: flex:1 分屏
   - 左侧 (60%)：当前会议卡片
@@ -487,8 +501,9 @@ elevation: 4,                               // Android 阴影
     - NextMeetingInfo（可滚动）
 
 **响应式设计**:
+
 - 强制横屏（app.json: `"orientation": "landscape"`）
-- 隐藏状态栏（app/_layout.tsx）
+- 隐藏状态栏（app/\_layout.tsx）
 - 使用flex布局，避免固定尺寸
 - FlatList指定contentContainerStyle确保高度
 
@@ -501,12 +516,14 @@ elevation: 4,                               // Android 阴影
 **文件**: `components/InitModal/index.tsx`
 
 **职责**:
+
 - 首次使用引导用户输入配置
 - 参数验证（非空检查）
 - 本地存储保存
 - 编辑模式支持（通过DebugPanel触发）
 
 **功能**:
+
 ```typescript
 - 三个输入框：ROOM_ID、APP_ID、APP_SECRET
 - 取消按钮（编辑模式下显示）
@@ -519,18 +536,20 @@ elevation: 4,                               // Android 阴影
 **文件**: `components/MeetingBoard/index.tsx`
 
 **职责**:
+
 - 管理数据获取生命周期
 - 60秒自动刷新逻辑
 - 错误处理和重试
 - 加载状态反馈
 
 **核心逻辑**:
+
 ```javascript
 // 初始化
 useEffect(() => {
-  fetchData();  // 首次加载
+  fetchData(); // 首次加载
   timerRef.current = setInterval(fetchData, 60 * 1000);
-  
+
   return () => {
     if (timerRef.current) clearInterval(timerRef.current);
   };
@@ -542,11 +561,13 @@ useEffect(() => {
 **文件**: `components/DebugPanel/index.tsx`
 
 **职责**:
+
 - 隐藏入口（四角点击序列）
 - 触发配置编辑
 - 自动隐藏逻辑
 
 **触发机制**:
+
 ```
 顺时针点击四个角落序列:
 ┌─────────────┐
@@ -586,6 +607,7 @@ toFeishuDateTime(date: Date): string
 ## 🔌 API请求拦截器
 
 ### 请求拦截
+
 ```javascript
 feishuAxios.interceptors.request.use(
   (config) => {
@@ -598,11 +620,12 @@ feishuAxios.interceptors.request.use(
   (error) => {
     console.error("❌ REQUEST ERROR:", error);
     return Promise.reject(error);
-  }
+  },
 );
 ```
 
 ### 响应拦截
+
 ```javascript
 feishuAxios.interceptors.response.use(
   (response) => {
@@ -615,7 +638,7 @@ feishuAxios.interceptors.response.use(
     console.error(`Message:`, error.message);
     console.error(`Response:`, error.response?.data);
     return Promise.reject(error);
-  }
+  },
 );
 ```
 
@@ -624,6 +647,7 @@ feishuAxios.interceptors.response.use(
 ## 📱 平台特性
 
 ### Android（投屏设备）
+
 - ✅ 强制横屏（landscape）
 - ✅ 隐藏状态栏
 - ✅ 最小SDK 30（Android 11+）
@@ -631,11 +655,13 @@ feishuAxios.interceptors.response.use(
 - ✅ 自适应图标支持
 
 ### iOS
+
 - ✅ 自动旋转支持
 - ✅ 安全区域适配
 - ✅ 深色模式支持
 
 ### Web
+
 - ✅ 响应式布局
 - ✅ 本地存储支持
 - ✅ 坐标事件兼容性处理
@@ -731,15 +757,19 @@ npx expo run:android --build
 ## 🐛 常见问题
 
 ### Q: Token过期怎么处理？
+
 A: 系统自动检查本地存储的过期时间，过期时重新请求新Token。如果API返回401，需要手动触发Token刷新。
 
 ### Q: 网络异常怎么反馈？
+
 A: 错误通过Toast提示用户，Console打印详细日志便于调试。建议检查网络和API端点配置。
 
 ### Q: 如何修改会议室配置？
+
 A: 点击屏幕四个角落顺序（顺时针）触发调试面板，显示修改按钮。
 
 ### Q: 支持多语言吗？
+
 A: 当前仅中文，所有文案硬编码。可通过i18n库扩展多语言支持。
 
 ---

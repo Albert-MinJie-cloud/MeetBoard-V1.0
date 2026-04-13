@@ -3,24 +3,10 @@ import { View, Text, StyleSheet, Animated } from "react-native";
 
 interface IndexProps {
   isMeetingActive: boolean;
-  meetRoomDataStatus: "empty" | "error" | "haveMeeting";
 }
 
-const MeetingStatus = ({
-  isMeetingActive = true,
-  meetRoomDataStatus,
-}: IndexProps) => {
-  const statusText = () => {
-    if (meetRoomDataStatus === "error") {
-      return "异常";
-    }
-    if (meetRoomDataStatus === "empty") {
-      return "空闲";
-    }
-    if (meetRoomDataStatus === "haveMeeting" && isMeetingActive) {
-      return "会议进行中";
-    }
-  };
+const MeetingStatus = ({ isMeetingActive = true }: IndexProps) => {
+  const statusText = isMeetingActive ? "会议进行中" : "空闲";
 
   const dotOpacity = useState(new Animated.Value(1))[0];
 
@@ -51,17 +37,13 @@ const MeetingStatus = ({
     <View
       style={[
         styles.statusContainer,
-        meetRoomDataStatus === "error" && styles.inactiveContainer,
-        meetRoomDataStatus === "empty" && styles.emptyContainer,
-        meetRoomDataStatus === "haveMeeting" &&
-          isMeetingActive &&
-          styles.activeContainer,
+        isMeetingActive ? styles.activeContainer : styles.emptyContainer,
       ]}
     >
       {isMeetingActive && (
         <Animated.View style={[styles.flashDot, { opacity: dotOpacity }]} />
       )}
-      <Text style={styles.meetingStatusText}>{statusText()}</Text>
+      <Text style={styles.meetingStatusText}>{statusText}</Text>
     </View>
   );
 };
@@ -78,21 +60,17 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 }, // 对应 0 4px
     shadowOpacity: 0.1, // 对应 10% 透明度
     shadowRadius: 6, // 对应 6px 模糊
-    // Android 阴影（必须加）
     elevation: 4,
   },
   activeContainer: {
     backgroundColor: "#E62E2E",
   },
-  inactiveContainer: {
-    backgroundColor: "#999999",
-  },
   emptyContainer: {
     backgroundColor: "#90C36B",
   },
   meetingStatusText: {
-    color: "white",
     fontSize: 48,
+    color: "white",
     fontWeight: "bold",
     textAlign: "center",
   },
@@ -101,6 +79,7 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 6, // 圆形
     backgroundColor: "white",
+    marginRight: 6,
   },
 });
 
