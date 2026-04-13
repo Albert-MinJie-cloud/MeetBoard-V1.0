@@ -90,7 +90,11 @@ const MeetingInfo = ({
             会议主题
           </Text>
         </View>
-        <Text style={[styles.labelValue, customStyles.labelValue]}>
+        <Text
+          style={[styles.labelValue, customStyles.labelValue]}
+          numberOfLines={2}
+          ellipsizeMode="tail"
+        >
           {renderSummary()}
         </Text>
       </View>
@@ -118,22 +122,24 @@ const styles = StyleSheet.create({
   },
   infoRow: {
     flexDirection: "column", // 标签和值上下排列
+    justifyContent: "flex-start",
   },
   infoLabel: {
     flexDirection: "row",
     alignItems: "center",
   },
   labelText: {
-    fontSize: 24,
+    fontSize: 20,
     marginLeft: 4,
     color: "#000",
     fontWeight: "600",
   },
   labelValue: {
-    fontSize: 20,
+    marginStart: 22,
+    fontSize: 28,
     marginLeft: 4,
     color: "#666",
-    fontWeight: "400",
+    fontWeight: "600",
   },
 });
 

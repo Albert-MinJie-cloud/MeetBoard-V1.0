@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   nextMeetingTitleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 24,
+    marginBottom: 16,
   },
   nextMeetingTitleIcon: {
     width: 6,
@@ -87,11 +87,11 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     borderRadius: 12,
     gap: 4,
-    padding: 24,
+    padding: 16,
     marginBottom: 12,
   },
   meetingTitle: {
-    fontSize: 24,
+    fontSize: 20,
     color: "#000",
     fontWeight: "600",
   },

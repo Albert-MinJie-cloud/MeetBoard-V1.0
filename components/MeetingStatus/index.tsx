@@ -16,12 +16,12 @@ const MeetingStatus = ({ isMeetingActive = true }: IndexProps) => {
         Animated.sequence([
           Animated.timing(dotOpacity, {
             toValue: 0,
-            duration: 500,
+            duration: 1000,
             useNativeDriver: true,
           }),
           Animated.timing(dotOpacity, {
             toValue: 1,
-            duration: 500,
+            duration: 1000,
             useNativeDriver: true,
           }),
         ]),
