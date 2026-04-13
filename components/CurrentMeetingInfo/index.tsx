@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   labelText: {
-    fontSize: 20,
+    fontSize: 24,
     marginLeft: 4,
     color: "#000",
     fontWeight: "600",
@@ -139,7 +139,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     marginLeft: 4,
     color: "#666",
-    fontWeight: "600",
   },
 });
 
