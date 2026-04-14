@@ -4,6 +4,12 @@ import { getHourMinute } from "@/utils/Time";
 
 import NoMeeting from "@/components/NoMeeting";
 
+import {
+  useFonts,
+  NotoSansSC_700Bold,
+  NotoSansSC_900Black,
+} from "@expo-google-fonts/noto-sans-sc";
+
 /**
  * 会议信息展示组件
  * @param {Object} props - 组件属性
@@ -23,6 +29,13 @@ interface NextMeetingInfoProps {
 }
 
 const NextMeetingInfo = ({ nextMeetings }: NextMeetingInfoProps) => {
+  const [fontsLoaded] = useFonts({
+    NotoSansSC_700Bold,
+    NotoSansSC_900Black,
+  });
+
+  console.log("字体加载是否成功", fontsLoaded);
+
   return (
     <View style={styles.nextMeetingsContainer}>
       <View style={styles.nextMeetingTitleContainer}>
@@ -65,6 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 16,
+    height: 40,
   },
   nextMeetingTitleIcon: {
     width: 6,
@@ -72,10 +86,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: "#1677ff",
     marginRight: 10,
+    marginTop: 4,
   },
   nextMeetingTitle: {
     fontSize: 28,
-    fontWeight: "600",
+    fontFamily: "NotoSansSC_700Bold",
+    lineHeight: 40,
     color: "#000",
   },
   meetingScrollView: {
@@ -88,12 +104,13 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     gap: 4,
     padding: 16,
-    marginBottom: 12,
+    marginBottom: 16,
   },
   meetingTitle: {
-    fontSize: 20,
-    color: "#000",
-    fontWeight: "600",
+    fontSize: 22,
+    color: "#666",
+    lineHeight: 24,
+    fontFamily: "NotoSansSC_900Black",
   },
   meetingPerson: {
     fontSize: 20,

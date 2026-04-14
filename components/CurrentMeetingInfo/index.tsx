@@ -2,9 +2,11 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 import { getHourMinute } from "@/utils/Time";
+
+import { useFonts, NotoSansSC_900Black } from "@expo-google-fonts/noto-sans-sc";
 
 interface MeetingInfoProps {
   isMeetingActive: boolean;
@@ -64,6 +66,12 @@ const MeetingInfo = ({
     return organizer_info?.name;
   };
 
+  const [fontsLoaded] = useFonts({
+    NotoSansSC_900Black,
+  });
+
+  console.log("字体加载是否成功", fontsLoaded);
+
   return (
     <View style={[styles.meetingInfoContainer, customStyles.container]}>
       {/* 会议时间行 */}
@@ -71,12 +79,10 @@ const MeetingInfo = ({
         <View style={[styles.infoLabel, customStyles.label]}>
           <MaterialCommunityIcons
             name="clock-time-three-outline"
-            size={20}
-            color="#000"
+            size={28}
+            color="#666"
           />
-          <Text style={[styles.labelText, customStyles.labelText]}>
-            会议时间
-          </Text>
+          <Text style={[styles.labelText, customStyles.labelText]}>时间</Text>
         </View>
         <Text style={[styles.labelValue, customStyles.labelValue]}>
           {renderTime()}
@@ -85,10 +91,8 @@ const MeetingInfo = ({
       {/* 会议主题行 */}
       <View style={[styles.infoRow, customStyles.row]}>
         <View style={[styles.infoLabel, customStyles.label]}>
-          <Ionicons name="chatbox-ellipses-outline" size={20} color="#000" />
-          <Text style={[styles.labelText, customStyles.labelText]}>
-            会议主题
-          </Text>
+          <Ionicons name="chatbox-ellipses-outline" size={28} color="#666" />
+          <Text style={[styles.labelText, customStyles.labelText]}>主题</Text>
         </View>
         <Text
           style={[styles.labelValue, customStyles.labelValue]}
@@ -101,7 +105,7 @@ const MeetingInfo = ({
       {/* 预约人行 */}
       <View style={[styles.infoRow, customStyles.row]}>
         <View style={[styles.infoLabel, customStyles.label]}>
-          <FontAwesome6 name="circle-user" size={18} color="#000" />
+          <FontAwesome5 name="user-circle" size={28} color="#666" />
           <Text style={[styles.labelText, customStyles.labelText]}>预约人</Text>
         </View>
         <Text style={[styles.labelValue, customStyles.labelValue]}>
@@ -118,7 +122,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     gap: 32,
-    paddingLeft: 12,
+    paddingHorizontal: 12,
   },
   infoRow: {
     flexDirection: "column", // 标签和值上下排列
@@ -128,17 +132,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  icon: {
+    color: "#666",
+  },
   labelText: {
-    fontSize: 24,
-    marginLeft: 4,
-    color: "#000",
-    fontWeight: "600",
+    fontSize: 32,
+    color: "#666",
+    lineHeight: 40,
+    fontFamily: "NotoSansSC_900Black",
+    marginStart: 4,
   },
   labelValue: {
-    marginStart: 22,
-    fontSize: 28,
-    marginLeft: 4,
-    color: "#666",
+    fontSize: 32,
+    color: "#000",
+    lineHeight: 40,
+    fontFamily: "NotoSansSC_900Black",
+    marginStart: 32,
   },
 });
 
