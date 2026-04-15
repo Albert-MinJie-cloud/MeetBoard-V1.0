@@ -6,8 +6,6 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 import { getHourMinute } from "@/utils/Time";
 
-import { useFonts, NotoSansSC_900Black } from "@expo-google-fonts/noto-sans-sc";
-
 interface MeetingInfoProps {
   isMeetingActive: boolean;
   meetingInfo: {
@@ -47,30 +45,24 @@ const MeetingInfo = ({
 
   const renderTime = () => {
     if (!isMeetingActive) {
-      return "暂无";
+      return "  ";
     }
     return `${getHourMinute(start_time)} - ${getHourMinute(end_time)}`;
   };
 
   const renderSummary = () => {
     if (!isMeetingActive) {
-      return "暂无";
+      return "  ";
     }
     return summary;
   };
 
   const renderPerson = () => {
     if (!isMeetingActive) {
-      return "暂无";
+      return "  ";
     }
     return organizer_info?.name;
   };
-
-  const [fontsLoaded] = useFonts({
-    NotoSansSC_900Black,
-  });
-
-  console.log("字体加载是否成功", fontsLoaded);
 
   return (
     <View style={[styles.meetingInfoContainer, customStyles.container]}>
@@ -139,14 +131,14 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: "#666",
     lineHeight: 40,
-    fontFamily: "NotoSansSC_900Black",
+    fontFamily: "Source_Han_Sans_Heavy",
     marginStart: 4,
   },
   labelValue: {
     fontSize: 32,
     color: "#000",
     lineHeight: 40,
-    fontFamily: "NotoSansSC_900Black",
+    fontFamily: "Source_Han_Sans_Heavy",
     marginStart: 32,
   },
 });

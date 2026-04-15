@@ -1,8 +1,35 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "react-native";
 import Toast, { BaseToast, BaseToastProps } from "react-native-toast-message";
+import { useEffect } from "react";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
 export default function RootLayout() {
+  // 保持启动屏不自动关闭
+  SplashScreen.preventAutoHideAsync();
+
+  // 加载你的字体
+  const [fontsLoaded, error] = useFonts({
+    Source_Han_Sans_Heavy: require("../assets/fonts/Source_Han_Sans_SC_Heavy_Heavy.otf"),
+  });
+
+  // 字体加载完成后，再隐藏启动屏
+  useEffect(() => {
+    if (error) {
+      console.error("字体加载失败:", error);
+      SplashScreen.hideAsync();
+    }
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, error]);
+
+  // 👇 字体没加载完 → 不渲染任何页面（彻底解决字体闪烁/不显示）
+  if (!fontsLoaded) {
+    return null;
+  }
+
   // 👇 第一步：配置右下角样式（全局生效）
   const toastConfig = {
     // 错误类型 toast

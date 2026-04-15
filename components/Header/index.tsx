@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 interface IndexProps {
   meetRoomName: string;
@@ -72,12 +72,12 @@ const Index = ({ meetRoomName }: IndexProps) => {
   return (
     <View style={styles.header}>
       <View style={styles.fontIconContainer}>
-        <FontAwesome6
+        {/* <FontAwesome6
           style={styles.fontIcon}
           name="location-dot"
           size={32}
           color="rgb(190, 219, 255)"
-        />
+        /> */}
         <Text style={styles.roomText}>
           {meetRoomName ? meetRoomName : "当前会议室"}
         </Text>

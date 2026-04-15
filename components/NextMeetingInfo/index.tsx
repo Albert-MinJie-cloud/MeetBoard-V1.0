@@ -4,12 +4,6 @@ import { getHourMinute } from "@/utils/Time";
 
 import NoMeeting from "@/components/NoMeeting";
 
-import {
-  useFonts,
-  NotoSansSC_700Bold,
-  NotoSansSC_900Black,
-} from "@expo-google-fonts/noto-sans-sc";
-
 /**
  * 会议信息展示组件
  * @param {Object} props - 组件属性
@@ -29,13 +23,6 @@ interface NextMeetingInfoProps {
 }
 
 const NextMeetingInfo = ({ nextMeetings }: NextMeetingInfoProps) => {
-  const [fontsLoaded] = useFonts({
-    NotoSansSC_700Bold,
-    NotoSansSC_900Black,
-  });
-
-  console.log("字体加载是否成功", fontsLoaded);
-
   return (
     <View style={styles.nextMeetingsContainer}>
       <View style={styles.nextMeetingTitleContainer}>
@@ -90,7 +77,7 @@ const styles = StyleSheet.create({
   },
   nextMeetingTitle: {
     fontSize: 28,
-    fontFamily: "NotoSansSC_700Bold",
+    fontFamily: "Source_Han_Sans_Heavy",
     lineHeight: 40,
     color: "#000",
   },
@@ -110,7 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: "#666",
     lineHeight: 24,
-    fontFamily: "NotoSansSC_900Black",
+    fontFamily: "Source_Han_Sans_Heavy",
   },
   meetingPerson: {
     fontSize: 20,
