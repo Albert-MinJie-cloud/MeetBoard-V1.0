@@ -81,6 +81,11 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "bold",
     fontFamily: "Source_Han_Sans_SC_Bold",
+    // 关键1：去掉安卓自带的字体内边距
+    includeFontPadding: false,
+    // 关键2：强制文字在容器内垂直居中
+    textAlignVertical: "center",
+    marginTop: 1,
   },
   meetingScrollView: {
     flex: 1,

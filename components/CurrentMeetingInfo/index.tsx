@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   infoLabel: {
-    height: 32,
+    // height: 32,
     flexDirection: "row",
     alignItems: "center", // 核心：垂直居中
     justifyContent: "flex-start",
@@ -136,6 +136,11 @@ const styles = StyleSheet.create({
     color: "#666",
     fontFamily: "Source_Han_Sans_SC_Regular",
     marginStart: 4,
+    // 关键1：去掉安卓自带的字体内边距
+    includeFontPadding: false,
+    // 关键2：强制文字在容器内垂直居中
+    textAlignVertical: "center",
+    marginTop: 1,
   },
   labelValue: {
     marginTop: 4,
