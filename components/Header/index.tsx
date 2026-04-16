@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
   roomText: {
     fontSize: 32,
     color: "white",
+    fontFamily: "Source_Han_Sans_SC_Regular",
   },
   timeDateContainer: {
     flexDirection: "row",
@@ -130,6 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: "white",
     fontWeight: "bold",
+    fontFamily: "Source_Han_Sans_SC_Bold",
   },
   dataIcon: {
     opacity: 0.8,
@@ -146,7 +148,9 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 20,
+    lineHeight: 24,
     color: "white",
+    fontFamily: "Source_Han_Sans_SC_Regular",
   },
 });
 

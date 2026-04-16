@@ -1,8 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 import { getHourMinute } from "@/utils/Time";
 
@@ -26,6 +24,7 @@ interface MeetingInfoProps {
     personValue?: object;
     labelText?: object;
     labelValue?: object;
+    labelBoldValue?: object;
   };
 }
 
@@ -69,11 +68,9 @@ const MeetingInfo = ({
       {/* 会议时间行 */}
       <View style={[styles.infoRow, customStyles.row]}>
         <View style={[styles.infoLabel, customStyles.label]}>
-          <MaterialCommunityIcons
-            name="clock-time-three-outline"
-            size={28}
-            color="#666"
-          />
+          <View style={styles.icon}>
+            <Ionicons name="time-outline" size={24} color="#666" />
+          </View>
           <Text style={[styles.labelText, customStyles.labelText]}>时间</Text>
         </View>
         <Text style={[styles.labelValue, customStyles.labelValue]}>
@@ -83,11 +80,13 @@ const MeetingInfo = ({
       {/* 会议主题行 */}
       <View style={[styles.infoRow, customStyles.row]}>
         <View style={[styles.infoLabel, customStyles.label]}>
-          <Ionicons name="chatbox-ellipses-outline" size={28} color="#666" />
+          <View style={styles.icon}>
+            <Ionicons name="chatbox-ellipses-outline" size={24} color="#666" />
+          </View>
           <Text style={[styles.labelText, customStyles.labelText]}>主题</Text>
         </View>
         <Text
-          style={[styles.labelValue, customStyles.labelValue]}
+          style={[styles.labelBoldValue, customStyles.labelBoldValue]}
           numberOfLines={2}
           ellipsizeMode="tail"
         >
@@ -97,7 +96,9 @@ const MeetingInfo = ({
       {/* 预约人行 */}
       <View style={[styles.infoRow, customStyles.row]}>
         <View style={[styles.infoLabel, customStyles.label]}>
-          <FontAwesome5 name="user-circle" size={28} color="#666" />
+          <View style={styles.icon}>
+            <Ionicons name="person-outline" size={24} color="#666" />
+          </View>
           <Text style={[styles.labelText, customStyles.labelText]}>预约人</Text>
         </View>
         <Text style={[styles.labelValue, customStyles.labelValue]}>
@@ -121,25 +122,41 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   infoLabel: {
+    height: 32,
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "center", // 核心：垂直居中
+    justifyContent: "flex-start",
   },
   icon: {
-    color: "#666",
+    paddingTop: 3,
   },
   labelText: {
-    fontSize: 32,
+    fontSize: 28,
+    lineHeight: 32,
     color: "#666",
-    lineHeight: 40,
-    fontFamily: "Source_Han_Sans_Heavy",
+    fontFamily: "Source_Han_Sans_SC_Regular",
     marginStart: 4,
   },
   labelValue: {
-    fontSize: 32,
+    marginTop: 4,
+    fontSize: 28,
+    lineHeight: 32,
     color: "#000",
-    lineHeight: 40,
-    fontFamily: "Source_Han_Sans_Heavy",
-    marginStart: 32,
+    fontFamily: "Source_Han_Sans_SC_Regular",
+    marginStart: 30,
+    includeFontPadding: false,
+    textAlignVertical: "center",
+  },
+  labelBoldValue: {
+    marginTop: 4,
+    fontSize: 28,
+    lineHeight: 32,
+    color: "#000",
+    fontWeight: "bold",
+    fontFamily: "Source_Han_Sans_SC_Bold",
+    marginStart: 30,
+    includeFontPadding: false,
+    textAlignVertical: "center",
   },
 });
 

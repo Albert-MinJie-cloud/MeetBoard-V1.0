@@ -71,8 +71,9 @@ const styles = StyleSheet.create({
   meetingStatusText: {
     fontSize: 48,
     color: "white",
-    fontWeight: "bold",
     textAlign: "center",
+    fontWeight: "bold",
+    fontFamily: "Source_Han_Sans_SC_Bold",
   },
   flashDot: {
     width: 12,

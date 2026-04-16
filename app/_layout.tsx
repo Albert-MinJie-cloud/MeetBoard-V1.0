@@ -11,7 +11,8 @@ export default function RootLayout() {
 
   // 加载你的字体
   const [fontsLoaded, error] = useFonts({
-    Source_Han_Sans_Heavy: require("../assets/fonts/Source_Han_Sans_SC_Heavy_Heavy.otf"),
+    Source_Han_Sans_SC_Regular: require("../assets/fonts/Source_Han_Sans_SC_Regular.otf"),
+    Source_Han_Sans_SC_Bold: require("../assets/fonts/Source_Han_Sans_SC_Bold.otf"),
   });
 
   // 字体加载完成后，再隐藏启动屏

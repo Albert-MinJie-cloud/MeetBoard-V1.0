@@ -77,9 +77,10 @@ const styles = StyleSheet.create({
   },
   nextMeetingTitle: {
     fontSize: 28,
-    fontFamily: "Source_Han_Sans_Heavy",
     lineHeight: 40,
     color: "#000",
+    fontWeight: "bold",
+    fontFamily: "Source_Han_Sans_SC_Bold",
   },
   meetingScrollView: {
     flex: 1,
@@ -97,11 +98,13 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: "#666",
     lineHeight: 24,
-    fontFamily: "Source_Han_Sans_Heavy",
+    fontWeight: "bold",
+    fontFamily: "Source_Han_Sans_SC_Bold",
   },
   meetingPerson: {
     fontSize: 20,
     color: "#666",
+    fontFamily: "Source_Han_Sans_SC_Regular",
   },
 });
 
