@@ -71,32 +71,22 @@ const Index = ({ meetRoomName }: IndexProps) => {
 
   return (
     <View style={styles.header}>
-      <View style={styles.fontIconContainer}>
-        {/* <FontAwesome6
-          style={styles.fontIcon}
-          name="location-dot"
-          size={32}
-          color="rgb(190, 219, 255)"
-        /> */}
-        <Text style={styles.roomText}>
-          {meetRoomName ? meetRoomName : "当前会议室"}
-        </Text>
-      </View>
+      <Text style={styles.roomText}>
+        {meetRoomName ? meetRoomName : "当前会议室"}
+      </Text>
 
       <Text style={styles.currentTimeText}>{timeInfo.timeHM}</Text>
 
-      <View style={styles.timeDateContainer}>
-        <View style={styles.dateContainer}>
-          <FontAwesome5
-            name="calendar-alt"
-            style={styles.dataIcon}
-            size={24}
-            color="rgb(190, 219, 255)"
-          />
-          <Text style={styles.dateText}>{timeInfo.yearsDay}</Text>
-          <Text style={styles.dateText}>{timeInfo.monthDay}</Text>
-          <Text style={styles.dateText}>{timeInfo.weekDay}</Text>
-        </View>
+      <View style={styles.dateContainer}>
+        <FontAwesome5
+          name="calendar-alt"
+          style={styles.dataIcon}
+          size={20}
+          color="rgb(190, 219, 255)"
+        />
+        <Text style={styles.dateText}>{timeInfo.yearsDay}</Text>
+        <Text style={styles.dateText}>{timeInfo.monthDay}</Text>
+        <Text style={styles.dateText}>{timeInfo.weekDay}</Text>
       </View>
     </View>
   );
@@ -110,35 +100,24 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  fontIconContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  fontIcon: {
-    opacity: 0.8,
-    marginRight: 12,
-  },
   roomText: {
     fontSize: 32,
     color: "white",
+    lineHeight: 36,
     fontFamily: "Source_Han_Sans_SC_Regular",
   },
-  timeDateContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
+
   currentTimeText: {
     fontSize: 32,
     color: "white",
+    lineHeight: 36,
     fontWeight: "bold",
     fontFamily: "Source_Han_Sans_SC_Bold",
   },
-  dataIcon: {
-    opacity: 0.8,
-    marginRight: 6,
-  },
   dateContainer: {
-    paddingVertical: 6,
+    paddingTop: 4,
+    paddingBottom: 6,
+    height: 36,
     paddingHorizontal: 18,
     borderRadius: 30,
     backgroundColor: "rgba(25, 60, 184, 0.5)",
@@ -146,10 +125,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 12,
   },
+  dataIcon: {
+    opacity: 0.8,
+    marginTop: 2,
+    marginRight: 6,
+  },
   dateText: {
     fontSize: 20,
-    lineHeight: 24,
     color: "white",
+    lineHeight: 24,
     fontFamily: "Source_Han_Sans_SC_Regular",
   },
 });

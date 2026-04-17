@@ -64,12 +64,12 @@ const styles = StyleSheet.create({
   nextMeetingTitleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
-    height: 40,
+    marginBottom: 24,
+    height: 32,
   },
   nextMeetingTitleIcon: {
     width: 6,
-    height: 28,
+    height: 24,
     borderRadius: 4,
     backgroundColor: "#1677ff",
     marginRight: 10,
@@ -77,13 +77,11 @@ const styles = StyleSheet.create({
   },
   nextMeetingTitle: {
     fontSize: 28,
-    lineHeight: 40,
+    lineHeight: 32,
     color: "#000",
     fontWeight: "bold",
     fontFamily: "Source_Han_Sans_SC_Bold",
-    // 关键1：去掉安卓自带的字体内边距
     includeFontPadding: false,
-    // 关键2：强制文字在容器内垂直居中
     textAlignVertical: "center",
     marginTop: 1,
   },
@@ -102,13 +100,14 @@ const styles = StyleSheet.create({
   meetingTitle: {
     fontSize: 22,
     color: "#666",
-    lineHeight: 24,
+    lineHeight: 26,
     fontWeight: "bold",
     fontFamily: "Source_Han_Sans_SC_Bold",
   },
   meetingPerson: {
     fontSize: 20,
     color: "#666",
+    lineHeight: 24,
     fontFamily: "Source_Han_Sans_SC_Regular",
   },
 });

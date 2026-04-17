@@ -73,7 +73,7 @@ const MeetingInfo = ({
           </View>
           <Text style={[styles.labelText, customStyles.labelText]}>时间</Text>
         </View>
-        <Text style={[styles.labelValue, customStyles.labelValue]}>
+        <Text style={[styles.labelBoldValue, customStyles.labelBoldValue]}>
           {renderTime()}
         </Text>
       </View>
@@ -101,7 +101,7 @@ const MeetingInfo = ({
           </View>
           <Text style={[styles.labelText, customStyles.labelText]}>预约人</Text>
         </View>
-        <Text style={[styles.labelValue, customStyles.labelValue]}>
+        <Text style={[styles.labelBoldValue, customStyles.labelBoldValue]}>
           {renderPerson()}
         </Text>
       </View>
@@ -122,7 +122,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   infoLabel: {
-    // height: 32,
     flexDirection: "row",
     alignItems: "center", // 核心：垂直居中
     justifyContent: "flex-start",
@@ -136,9 +135,7 @@ const styles = StyleSheet.create({
     color: "#666",
     fontFamily: "Source_Han_Sans_SC_Regular",
     marginStart: 4,
-    // 关键1：去掉安卓自带的字体内边距
     includeFontPadding: false,
-    // 关键2：强制文字在容器内垂直居中
     textAlignVertical: "center",
     marginTop: 1,
   },
@@ -148,7 +145,7 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     color: "#000",
     fontFamily: "Source_Han_Sans_SC_Regular",
-    marginStart: 30,
+    marginStart: 28,
     includeFontPadding: false,
     textAlignVertical: "center",
   },
@@ -159,7 +156,7 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "bold",
     fontFamily: "Source_Han_Sans_SC_Bold",
-    marginStart: 30,
+    marginStart: 28,
     includeFontPadding: false,
     textAlignVertical: "center",
   },
