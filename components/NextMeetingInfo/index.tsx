@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 24,
-    height: 32,
+    height: 36,
   },
   nextMeetingTitleIcon: {
     width: 6,
@@ -77,13 +77,12 @@ const styles = StyleSheet.create({
   },
   nextMeetingTitle: {
     fontSize: 28,
-    lineHeight: 32,
+    lineHeight: 36,
     color: "#000",
     fontWeight: "bold",
     fontFamily: "Source_Han_Sans_SC_Bold",
     includeFontPadding: false,
     textAlignVertical: "center",
-    marginTop: 1,
   },
   meetingScrollView: {
     flex: 1,
